@@ -1,32 +1,25 @@
-.title {
-     color: white;
-     font-weight: 300;
-     padding: 160px 30px;
-     text-align: center;
-     transition: opacity 0.3s ease;
+.services-wrapper {
+     background-color: #000;
+     min-height: 100vh;
+     padding: 20px;
 }
 
-.title.hidden {
-     opacity: 0;
-     pointer-events: none;
+.services-title {
+     color: white;
+     font-weight: 300;
+     text-align: center;
+     margin: 100px 0;
 }
 
 .services-container {
      display: grid;
-     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+     grid-template-columns: repeat(2, 1fr);
      gap: 20px;
-     padding: 20px;
-     background-color: black;
-     min-height: 100vh;
      transition: all 0.3s ease;
 }
 
-.services-container.expanded {
-     grid-template-columns: 1fr;
-}
-
 .service-card {
-     background-color: #4b0082;
+     background-color: #000;
      color: white;
      border-radius: 10px;
      padding: 20px;
@@ -38,6 +31,7 @@
      justify-content: center;
      align-items: center;
      text-align: center;
+     height: 200px;
 }
 
 .service-card h2 {
@@ -47,75 +41,83 @@
 }
 
 .service-card .service-content {
-     max-height: 0;
-     opacity: 0;
-     transition: all 0.3s ease;
-     margin: 0;
-}
-
-.service-card.active {
-     transform: scale(1.05);
-     z-index: 1;
-}
-
-.service-card.active h2 {
-     margin-bottom: 15px;
-}
-
-.service-card.active .service-content {
-     max-height: 1000px;
-     opacity: 1;
-     margin-top: 10px;
+     display: none;
 }
 
 .service-card.expanded {
      position: fixed;
-     top: 50%;
-     left: 55%;
-     /* Moved slightly to the right */
-     transform: translate(-50%, -50%) scale(0.9);
-     /* Zoomed out a bit more */
-     width: 85%;
-     height: 85%;
-     max-width: 1200px;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     width: 100%;
+     height: 100%;
+     max-width: none;
      z-index: 1000;
      cursor: default;
+     border-radius: 0;
+     flex-direction: row;
+     padding: 0;
+}
+
+.service-card.expanded .card-image {
+     width: 50%;
+     height: 100%;
+     overflow: hidden;
+}
+
+.service-card.expanded .card-image img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+}
+
+.service-card.expanded .card-content {
+     width: 50%;
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     padding: 40px;
+     box-sizing: border-box;
 }
 
 .service-card.expanded h2 {
-     font-size: 2.2em;
-     margin-bottom: 30px;
+     position: absolute;
+     top: 20px;
+     left: 20px;
+     font-size: 2em;
+     margin: 0;
 }
 
 .service-card.expanded .service-content {
-     max-height: none;
+     display: block;
+     font-size: 1.1em;
+     line-height: 1.6;
      opacity: 1;
-     font-size: 1.3em;
-     line-height: 1.7;
-     padding: 0 40px;
 }
 
 .close-button {
-     position: fixed;
+     position: absolute;
      top: 20px;
-     left: 20px;
-     background-color: white;
-     color: black;
+     right: 20px;
+     background: none;
      border: none;
-     border-radius: 50%;
-     width: 40px;
-     height: 40px;
-     font-size: 20px;
      cursor: pointer;
      z-index: 1001;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     transition: all 0.3s ease;
+     padding: 0;
+     filter: brightness(0) invert(1);
 }
 
-.close-button:hover {
-     background-color: #f0f0f0;
+.close-button img:hover {
+     width: 34px;
+     transition: all 0.08s ease;
+}
+
+.close-button img {
+     width: 30px;
+     aspect-ratio: 1/1;
+     transition: all 0.08s ease;
 }
 
 @media (max-width: 768px) {
@@ -124,9 +126,18 @@
      }
 
      .service-card.expanded {
-          width: 95%;
-          height: 95%;
-          left: 50%;
-          /* Center on mobile */
+          flex-direction: column;
+     }
+
+     .service-card.expanded .card-image,
+     .service-card.expanded .card-content {
+          width: 100%;
+          height: 50%;
+     }
+
+     .service-card.expanded h2 {
+          top: 10px;
+          left: 10px;
+          font-size: 1.5em;
      }
 }
