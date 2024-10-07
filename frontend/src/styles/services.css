@@ -2,24 +2,46 @@
      background-color: #000;
      min-height: 100vh;
      padding: 20px;
+     overflow: hidden;
+     /* Disable scrolling */
+}
+
+.services-title-container {
+     height: 50vh;
+     /* Reduced height */
+     display: flex;
+     justify-content: center;
+     align-items: center;
 }
 
 .services-title {
      color: white;
      font-weight: 300;
      text-align: center;
-     margin: 100px 0;
+     margin: 0;
 }
 
 .services-container {
      display: grid;
      grid-template-columns: repeat(2, 1fr);
      gap: 20px;
-     transition: all 0.3s ease;
+     transition: opacity 0.5s ease, transform 0.5s ease;
+     opacity: 0;
+     transform: translateY(50px);
+     height: 100vh;
+     /* Full height */
+     overflow: hidden;
+     /* Disable scrolling */
+}
+
+.services-container.show {
+     opacity: 1;
+     transform: translateY(0);
 }
 
 .service-card {
-     background-color: #000;
+     background-color: #333;
+     /* Lighter shade */
      color: white;
      border-radius: 10px;
      padding: 20px;
@@ -31,7 +53,20 @@
      justify-content: center;
      align-items: center;
      text-align: center;
-     height: 200px;
+     height: 100%;
+     /* Full height */
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     /* Default subtle shadow */
+}
+
+.service-card:first-child {
+     background-color: #444;
+     /* Slightly lighter shade for the first card */
+}
+
+.service-card:not(.expanded):hover {
+     box-shadow: 0 0px 150px rgba(255, 255, 255, 0.2);
+     /* Purple shadow on hover */
 }
 
 .service-card h2 {
@@ -82,12 +117,10 @@
      box-sizing: border-box;
 }
 
-.service-card.expanded h2 {
-     position: absolute;
-     top: 20px;
-     left: 20px;
+.service-card.expanded .card-content h2 {
+     position: static;
      font-size: 2em;
-     margin: 0;
+     margin-bottom: 20px;
 }
 
 .service-card.expanded .service-content {
@@ -135,9 +168,7 @@
           height: 50%;
      }
 
-     .service-card.expanded h2 {
-          top: 10px;
-          left: 10px;
+     .service-card.expanded .card-content h2 {
           font-size: 1.5em;
      }
 }

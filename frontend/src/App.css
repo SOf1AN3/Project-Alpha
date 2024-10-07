@@ -74,9 +74,12 @@ button {
   color: black;
 }
 
-button:active {
-  background-color: rgb(161, 161, 161);
+.connexion-btn:active {
+  background-color: rgb(50, 50, 50);
+  color: white;
 }
+
+
 
 li {
   display: flex;
