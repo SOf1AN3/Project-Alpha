@@ -3,8 +3,13 @@
      font-weight: 300;
      padding: 160px 30px;
      text-align: center;
+     transition: opacity 0.3s ease;
 }
 
+.title.hidden {
+     opacity: 0;
+     pointer-events: none;
+}
 
 .services-container {
      display: grid;
@@ -13,6 +18,11 @@
      padding: 20px;
      background-color: black;
      min-height: 100vh;
+     transition: all 0.3s ease;
+}
+
+.services-container.expanded {
+     grid-template-columns: 1fr;
 }
 
 .service-card {
@@ -58,8 +68,65 @@
      margin-top: 10px;
 }
 
+.service-card.expanded {
+     position: fixed;
+     top: 50%;
+     left: 55%;
+     /* Moved slightly to the right */
+     transform: translate(-50%, -50%) scale(0.9);
+     /* Zoomed out a bit more */
+     width: 85%;
+     height: 85%;
+     max-width: 1200px;
+     z-index: 1000;
+     cursor: default;
+}
+
+.service-card.expanded h2 {
+     font-size: 2.2em;
+     margin-bottom: 30px;
+}
+
+.service-card.expanded .service-content {
+     max-height: none;
+     opacity: 1;
+     font-size: 1.3em;
+     line-height: 1.7;
+     padding: 0 40px;
+}
+
+.close-button {
+     position: fixed;
+     top: 20px;
+     left: 20px;
+     background-color: white;
+     color: black;
+     border: none;
+     border-radius: 50%;
+     width: 40px;
+     height: 40px;
+     font-size: 20px;
+     cursor: pointer;
+     z-index: 1001;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     transition: all 0.3s ease;
+}
+
+.close-button:hover {
+     background-color: #f0f0f0;
+}
+
 @media (max-width: 768px) {
      .services-container {
           grid-template-columns: 1fr;
+     }
+
+     .service-card.expanded {
+          width: 95%;
+          height: 95%;
+          left: 50%;
+          /* Center on mobile */
      }
 }

@@ -3,6 +3,7 @@ import '../styles/services.css';
 
 const Cards = () => {
      const [activeCard, setActiveCard] = useState(null);
+     const [expandedCard, setExpandedCard] = useState(null);
 
      const services = [
           {
@@ -24,15 +25,23 @@ const Cards = () => {
      ];
 
      const handleCardClick = (index) => {
-          setActiveCard(activeCard === index ? null : index);
+          if (expandedCard === null) {
+               setActiveCard(activeCard === index ? null : index);
+               setExpandedCard(index);
+          }
+     };
+
+     const handleCloseClick = () => {
+          setExpandedCard(null);
+          setActiveCard(null);
      };
 
      return (
-          <div className="services-container">
+          <div className={`services-container ${expandedCard !== null ? 'expanded' : ''}`}>
                {services.map((service, index) => (
                     <div
                          key={index}
-                         className={`service-card ${activeCard === index ? 'active' : ''}`}
+                         className={`service-card ${activeCard === index ? 'active' : ''} ${expandedCard === index ? 'expanded' : ''}`}
                          onClick={() => handleCardClick(index)}
                          style={{ backgroundColor: `hsl(270, 50%, ${20 + index * 10}%)` }}
                     >
@@ -40,6 +49,11 @@ const Cards = () => {
                          <p className="service-content">{service.content}</p>
                     </div>
                ))}
+               {expandedCard !== null && (
+                    <button className="close-button" onClick={handleCloseClick}>
+                         &times; Close
+                    </button>
+               )}
           </div>
      );
 };

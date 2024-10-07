@@ -11,20 +11,22 @@ const Header = () => {
      };
 
      return (
-          <header className={isMenuOpen ? 'show-menu' : ''}>
-               <a href="/home"><img className="logo" src={logo} alt="Logo" /></a>
-               <ul className="header-list">
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/services">Services</a></li>
-                    <li><a href="/expats">Expats</a></li>
-                    <li><a href="/contact">Contact Us</a></li>
-                    <li><a href="/about">About Us</a></li>
-               </ul>
-               <button className="menu-button" onClick={toggleMenu}>
-                    <img src={menuIcon} alt="Menu" />
-               </button>
-               <a href="/connexion"><button className="login-btn">Se Connecter</button></a>
-          </header>
+          <div className='no-select'>
+               <header className={isMenuOpen ? 'show-menu' : ''}>
+                    <a draggable="false" href="/home"><img draggable='false' className="logo" src={logo} alt="Logo" /></a>
+                    <ul className="header-list">
+                         <li><a draggable="false" href="/home">Home</a></li>
+                         <li><a draggable="false" href="/services">Services</a></li>
+                         <li><a draggable="false" href="/expats">Expats</a></li>
+                         <li><a draggable="false" href="/contact">Contact Us</a></li>
+                         <li><a draggable="false" href="/about">About Us</a></li>
+                    </ul>
+                    <button className="menu-button" onClick={toggleMenu}>
+                         <img draggable="false" src={menuIcon} alt="Menu" />
+                    </button>
+                    <a draggable="false" className='connexion-btn' href="/connexion">Se Connecter</a>
+               </header>
+          </div>
      );
 }
 

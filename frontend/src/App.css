@@ -24,6 +24,7 @@ header {
 .logo {
   aspect-ratio: 1/1;
   width: 40px;
+  margin-right: 100px;
 }
 
 /* Navigation list */
@@ -42,7 +43,7 @@ a {
 
 ul a {
   font-size: 1rem;
-  transition: all 0.5s;
+  transition: all 0.4s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,6 +61,17 @@ button {
   border: none;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.connexion-btn {
+  padding: 10px 20px;
+  background-color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  color: black;
 }
 
 button:active {
@@ -115,6 +127,7 @@ li {
   z-index: -1;
   height: 100%;
   width: 100%;
+
 }
 
 /* Home title styling */
@@ -123,6 +136,10 @@ li {
   font-size: 70px;
   color: white;
   font-weight: 300;
+}
+
+.no-select {
+  user-select: none;
 }
 
 /* Media query for mobile screens */
