@@ -7,7 +7,6 @@ const Services = () => {
      return (
           <>
                <Header />
-               <Title />
                <Cards />
           </>
      )

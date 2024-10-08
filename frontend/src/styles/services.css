@@ -1,8 +1,7 @@
 .services-wrapper {
-     background-color: #000;
+     background-color: none;
      min-height: 100vh;
      padding: 20px;
-     overflow: hidden;
      /* Disable scrolling */
 }
 
@@ -12,6 +11,7 @@
      display: flex;
      justify-content: center;
      align-items: center;
+     background-color: none;
 }
 
 .services-title {
