@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import '../styles/services.css';
 import exitIcon from '../assets/exit.png';
 import image1 from '../assets/1.jpg';
@@ -10,21 +10,6 @@ const LazyImage = lazy(() => import('./LazyImage'));
 
 const Cards = () => {
      const [expandedCard, setExpandedCard] = useState(null);
-     const [showCards, setShowCards] = useState(false);
-
-     useEffect(() => {
-          const handleScroll = () => {
-               if (window.scrollY > 1) {
-                    setShowCards(true);
-               } else {
-                    setShowCards(false);
-               }
-          };
-
-          window.addEventListener('scroll', handleScroll);
-          return () => window.removeEventListener('scroll', handleScroll);
-     }, []);
-
      const services = [
           {
                title: "Consulting Stratégique",
@@ -61,10 +46,8 @@ const Cards = () => {
 
      return (
           <div className="services-wrapper">
-               <div className="services-title-container">
-                    <h1 className="services-title no-select">Nos services de Consulting, Formation et Accompagnement Digital</h1>
-               </div>
-               <div className={`services-container ${showCards ? 'show' : ''}`}>
+               <h1 className="services-title no-select">Nos services de Consulting, Formation et Accompagnement Digital</h1>
+               <div className={`services-container ${expandedCard !== null ? 'expanded' : ''}`}>
                     {services.map((service, index) => (
                          <div
                               key={index}
@@ -72,7 +55,8 @@ const Cards = () => {
                               onClick={() => handleCardClick(index)}
                               style={{ backgroundColor: `rgb(${index * 20}, ${index * 20}, ${index * 20})` }}
                          >
-                              {expandedCard === index ? (
+                              <h2>{service.title}</h2>
+                              {expandedCard === index && (
                                    <>
                                         <div className="card-image">
                                              <Suspense fallback={<div>Loading...</div>}>
@@ -80,16 +64,11 @@ const Cards = () => {
                                              </Suspense>
                                         </div>
                                         <div className="card-content">
-                                             <h2>{service.title}</h2>
                                              <p className="service-content">{service.content}</p>
                                         </div>
                                         <button className="close-button" onClick={handleCloseClick}>
                                              <img src={exitIcon} alt="Close" />
                                         </button>
-                                   </>
-                              ) : (
-                                   <>
-                                        <h2>{service.title}</h2>
                                    </>
                               )}
                          </div>
