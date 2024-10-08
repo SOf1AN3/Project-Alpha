@@ -55,7 +55,7 @@ const Cards = () => {
                               onClick={() => handleCardClick(index)}
                               style={{ backgroundColor: `rgb(${index * 20}, ${index * 20}, ${index * 20})` }}
                          >
-                              <h2>{service.title}</h2>
+                              {expandedCard !== index && <h2>{service.title}</h2>}
                               {expandedCard === index && (
                                    <>
                                         <div className="card-image">
@@ -64,6 +64,7 @@ const Cards = () => {
                                              </Suspense>
                                         </div>
                                         <div className="card-content">
+                                             <h2>{service.title}</h2>
                                              <p className="service-content">{service.content}</p>
                                         </div>
                                         <button className="close-button" onClick={handleCloseClick}>
