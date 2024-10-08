@@ -51,7 +51,7 @@ const Cards = () => {
                     {services.map((service, index) => (
                          <div
                               key={index}
-                              className={`no-select service-card ${expandedCard === index ? 'expanded' : ''}`}
+                              className={`service-card ${expandedCard === index ? 'expanded' : ''}`}
                               onClick={() => handleCardClick(index)}
                               style={{ backgroundColor: `rgb(${index * 20}, ${index * 20}, ${index * 20})` }}
                          >

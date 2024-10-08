@@ -1,0 +1,129 @@
+.connexion-container {
+     position: relative;
+     width: 100%;
+     height: 90vh;
+     overflow: hidden;
+}
+
+.background-video {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     z-index: -1;
+     opacity: 0.6;
+}
+
+.connexion-form {
+     display: flex;
+     justify-content: center;
+     align-items: flex-start;
+     height: 100vh;
+     background-color: none;
+     padding-top: 10vh;
+     z-index: -1;
+     /* Added padding to move the form higher */
+}
+
+.connexion-form form {
+     background-color: rgba(0, 0, 0, 0.8);
+     padding: 2.5rem;
+     margin: 2.5rem;
+     border-radius: 10px;
+     /* Slightly increased border radius */
+     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+     width: 340px;
+     /* Increased width */
+}
+
+.connexion-form h1 {
+     color: #ffffff;
+     text-align: center;
+     margin-bottom: 1.8rem;
+     /* Increased margin */
+     font-size: 2rem;
+     /* Increased font size */
+}
+
+.connexion-form .text-input {
+     width: 100%;
+     padding: 1rem;
+     /* Increased padding */
+     margin-bottom: 1.2rem;
+     /* Increased margin */
+     border: none;
+     border-radius: 6px;
+     /* Slightly increased border radius */
+     background-color: #333333;
+     color: #ffffff;
+     font-size: 1rem;
+     /* Increased font size */
+}
+
+.connexion-form .text-input::placeholder {
+     color: #aaaaaa;
+}
+
+.connexion-form .rester {
+     margin-right: 0.5rem;
+}
+
+/* Checkbox styling */
+.connexion-form .rester-container {
+     display: flex;
+     align-items: center;
+     margin-bottom: 1.2rem;
+     /* Increased margin */
+}
+
+.connexion-form .rester {
+     appearance: none;
+     width: 20px;
+     /* Slightly increased size */
+     height: 20px;
+     /* Slightly increased size */
+     border: 2px solid #ffffff;
+     border-radius: 4px;
+     margin-right: 0.6rem;
+     /* Slightly increased margin */
+     cursor: pointer;
+}
+
+.connexion-form .rester:checked {
+     background-color: #ffffff;
+     position: relative;
+}
+
+.connexion-form .rester:checked::after {
+     content: '\2714';
+     font-size: 16px;
+     /* Increased font size */
+     color: #000000;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+}
+
+.connexion-form .rester-label {
+     color: #ffffff;
+     font-size: 1rem;
+     /* Increased font size */
+}
+
+/* Center the button */
+.connexion-form button {
+     display: block;
+     margin: 1.2rem auto 0;
+     /* Increased top margin */
+     padding: 0.9rem 1.5rem;
+     /* Added padding */
+     font-size: 1rem;
+     /* Increased font size */
+}
+
+.connexion-form button:hover {
+     background-color: rgb(202, 202, 202);
+}
