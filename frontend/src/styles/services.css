@@ -1,9 +1,9 @@
 .services-wrapper {
      position: relative;
      min-width: none;
+     min-height: 65.5vh;
      padding: 0;
-     overflow: hidden;
-     height: 100vh;
+     height: auto;
      z-index: 1;
 }
 
@@ -12,7 +12,7 @@
      top: 0;
      left: 0;
      width: 100%;
-     height: 100%;
+     height: 100vh;
      object-fit: cover;
      z-index: -1;
 }
@@ -42,6 +42,7 @@
      grid-template-columns: repeat(4, 1fr);
      gap: 0px;
      transition: all 0.3s ease;
+     height: auto;
 }
 
 .service-card {
@@ -177,10 +178,14 @@
      transition: all 0.08s ease;
 }
 
+.services-wrapper::-webkit-scrollbar {
+     display: none;
+}
+
 @media (max-width: 768px) {
      .services-wrapper {
-          overflow: auto;
-          scrollbar-width: 0px;
+          overflow-y: scroll;
+          scrollbar-width: none;
      }
 
      .services-container {
@@ -193,18 +198,30 @@
 
      .service-card.expanded {
           flex-direction: column;
+          font-size: medium;
+          width: 100vw;
+          /* Ensure it takes the full width of the viewport */
+          height: auto;
+          /* Allow height to adjust based on content */
+          /* padding: 20px; */
+          margin-left: 0;
+          /* Add some padding for better readability */
      }
 
      .service-card.expanded .card-image,
      .service-card.expanded .card-content {
           width: 100%;
-          height: 50%;
+          height: auto;
+          /* Allow height to adjust based on content */
      }
 
      .service-card.expanded h2 {
-          top: 100px;
-          left: 100px;
+          top: auto;
+          left: auto;
           font-size: 1.5em;
+          /* Adjust font size for better readability */
+          margin-bottom: 20px;
+          /* Add margin for spacing */
      }
 
      .service-card:not(.expanded) {
