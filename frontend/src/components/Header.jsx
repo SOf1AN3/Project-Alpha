@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../assets/logo.png';
-import menuIcon from '../assets/menu.png'; // Assuming this is the path for menu.png
+import menuIcon from '../assets/menu.png';
+import exitIcon from '../assets/exit.png'; // Import the exit icon
 import '../App.css';
 
 const Header = () => {
@@ -25,6 +26,11 @@ const Header = () => {
                          <img draggable="false" src={menuIcon} alt="Menu" />
                     </button>
                     <a draggable="false" className='connexion-btn' href="/connexion">Se Connecter</a>
+                    {isMenuOpen && (
+                         <button className="exit-button" onClick={toggleMenu}>
+                              <img draggable="false" src={exitIcon} alt="Exit" />
+                         </button>
+                    )}
                </header>
           </div>
      );
