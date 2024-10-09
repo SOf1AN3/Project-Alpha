@@ -88,6 +88,10 @@ li {
   align-items: center;
 }
 
+h1 {
+  color: white;
+}
+
 /* Menu button styling (hidden by default on larger screens) */
 .menu-button {
   display: none;

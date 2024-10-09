@@ -1,10 +1,11 @@
 .services-wrapper {
      position: relative;
      min-width: none;
-     min-height: 65.5vh;
+     min-height: 100vh;
      padding: 0;
      height: auto;
      z-index: 1;
+     overflow: hidden;
 }
 
 .background-video {
@@ -28,6 +29,7 @@
      background-color: rgba(0, 0, 0, 0);
      /* Semi-transparent overlay */
      z-index: -1;
+     overflow: hidden;
 }
 
 .services-title {
@@ -182,6 +184,17 @@
      display: none;
 }
 
+@media (max-width: 1068px) {
+     .services-container {
+          grid-template-columns: repeat(2, 1fr);
+     }
+
+     .service-card:not(.expanded) {
+          margin: 0px 20px 20px 20px;
+     }
+
+}
+
 @media (max-width: 768px) {
      .services-wrapper {
           overflow-y: scroll;
@@ -227,4 +240,3 @@
      .service-card:not(.expanded) {
           margin: 0px 20px 20px 20px;
      }
-}
