@@ -8,7 +8,7 @@ const Home = () => {
                <div className='background-overlay'></div>
                <Header />
                <div className='background-pos'>
-                    <h1 className='home-title no-select'>More then just a solution</h1>
+                    <h1 className='home-title no-select'>More than just a solution</h1>
                </div>
           </div>
      )

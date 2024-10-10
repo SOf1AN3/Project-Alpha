@@ -9,11 +9,22 @@
      opacity: 0.5;
 }
 
+.contactez-nous {
+     text-decoration: underline;
+}
+
+.contactez-h1 {
+     padding-top: 50px;
+}
+
 .container-qst {
-     max-width: 800px;
+     max-width: 1100px;
      margin: 0 auto;
      padding: 20px;
+     padding-bottom: 50px;
      color: white;
+     user-select: none;
+     line-height: 2rem;
 }
 
 .container-qst p {
@@ -23,16 +34,22 @@
 }
 
 .container-qst .title {
-     margin: 250px 0;
+     color: white;
+     font-weight: 300;
+     text-align: center;
+     margin: 300px 0;
+
 }
 
 .container-qst h1 {
      margin: 20px 0;
+
 }
 
 .container-qst h2 {
      margin-bottom: 60px;
      font-weight: 300;
+     line-height: 2.5rem;
 }
 
 .question-list {
@@ -45,6 +62,14 @@
      margin-bottom: 10px;
      overflow: hidden;
      transition: all 0.3s ease;
+}
+
+.question:hover {
+     background-color: rgba(60, 60, 60, 0.7);
+}
+
+.question.active {
+     background-color: rgba(60, 60, 60, 0.7);
 }
 
 .question-header {

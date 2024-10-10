@@ -1,6 +1,5 @@
 import React from 'react'
 import '../styles/connexion.css'
-import backgroundVideo from '../assets/connexion.mp4'
 
 const Connexion = () => {
      return (
