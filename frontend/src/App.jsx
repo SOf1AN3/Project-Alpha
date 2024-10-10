@@ -9,6 +9,12 @@ import Expats from './pages/Expats';
 import Contact from './pages/Contact';
 import AboutPage from './pages/AboutPage';
 
+import './App.css';
+import './styles/about.css';
+import './styles/services.css';
+import './styles/contact.css';
+import './styles/connexion.css';
+import './styles/expats.css';
 
 function App() {
 
