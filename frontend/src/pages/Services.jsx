@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Cards from '../components/Cards'
 import Header from '../components/Header'
 import servicesVideo from '../assets/services.mp4'

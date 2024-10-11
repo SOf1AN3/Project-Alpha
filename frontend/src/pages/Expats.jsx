@@ -1,4 +1,3 @@
-import React from 'react'
 import Header from '../components/Header'
 import ExpatsServices from '../components/ExpatsServices'
 import expatsVideo from '../assets/expats.mp4'
