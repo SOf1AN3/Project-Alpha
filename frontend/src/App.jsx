@@ -1,5 +1,3 @@
-
-import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Services from './pages/Services'
@@ -17,8 +15,6 @@ import './styles/connexion.css';
 import './styles/expats.css';
 
 function App() {
-
-
   return (
     <Router>
       <Routes>
@@ -29,8 +25,6 @@ function App() {
         <Route path="/expats" element={<Expats />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<AboutPage />} />
-
-
       </Routes>
     </Router>
   )
