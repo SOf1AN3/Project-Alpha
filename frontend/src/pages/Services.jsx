@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import Cards from '../components/Cards'
 import Header from '../components/Header'
-import servicesVideo from '../assets/services.mp4'
+import servicesVideo from '../assets/services-cmp.mp4'
 
 const Services = () => {
      const videoRef = useRef(null);

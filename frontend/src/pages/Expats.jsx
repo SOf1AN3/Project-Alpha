@@ -1,6 +1,6 @@
 import Header from '../components/Header'
 import ExpatsServices from '../components/ExpatsServices'
-import expatsVideo from '../assets/expats.mp4'
+import expatsVideo from '../assets/expats-cmp.mp4'
 
 const Expats = () => {
      return (

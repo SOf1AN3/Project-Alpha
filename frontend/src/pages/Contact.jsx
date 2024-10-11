@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import ContactForm from '../components/ContactForm'
-import contactVideo from '../assets/contact.mp4'
+import contactVideo from '../assets/contact-cmp.mp4'
 
 const Contact = () => {
      return (
