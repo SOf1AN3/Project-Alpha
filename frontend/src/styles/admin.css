@@ -1,0 +1,64 @@
+body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     padding: 0;
+     background-color: #000000;
+     color: white;
+}
+
+.admin-container {
+     display: flex;
+     height: 100vh;
+}
+
+.sidebar {
+     width: 200px;
+     background-color: #202020;
+     padding: 20px;
+}
+
+.sidebar h2 {
+     margin-top: 0;
+}
+
+.sidebar ul {
+     list-style-type: none;
+     padding: 0;
+}
+
+.sidebar li {
+     margin-bottom: 10px;
+}
+
+.main-content {
+     flex-grow: 1;
+     padding: 20px;
+}
+
+.header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 20px;
+}
+
+.generate-btn,
+.logout-btn {
+     margin: 10px;
+}
+
+.messages-table {
+     width: 1200px;
+     border-collapse: collapse;
+}
+
+.messages-table th,
+.messages-table td {
+     border: 1px solid #ffffff;
+     padding: 10px;
+     text-align: left;
+}
+
+.messages-table th {
+     background-color: #202020;
+}

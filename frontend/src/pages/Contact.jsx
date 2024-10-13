@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import ContactForm from '../components/ContactForm'
-import contactVideo from '../assets/contact-cmp.mp4'
+import contactVideo from '../assets/expats-cmp.mp4'
 
 const Contact = () => {
      return (
@@ -19,7 +19,7 @@ const Contact = () => {
                          objectFit: 'cover',
                          transform: 'translate(-50%, -50%)',
                          zIndex: '-1',
-                         opacity: '0.7'
+                         opacity: '0.9'
                     }}
                >
                     <source src={contactVideo} type="video/mp4" />

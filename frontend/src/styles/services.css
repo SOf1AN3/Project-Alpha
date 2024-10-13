@@ -75,6 +75,7 @@
 .service-card.service-card:not(.expanded) {
      user-select: none;
      margin: 0 20px;
+     margin-bottom: 20px;
 }
 
 .service-card h2 {

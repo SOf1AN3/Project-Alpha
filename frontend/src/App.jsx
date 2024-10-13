@@ -13,6 +13,7 @@ import './styles/services.css';
 import './styles/contact.css';
 import './styles/connexion.css';
 import './styles/expats.css';
+import AdminPanel from './components/AdminPanel';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/expats" element={<Expats />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/admin" element={<AdminPanel />} />
       </Routes>
     </Router>
   )

@@ -6,4 +6,13 @@ export default defineConfig({
   build: {
     outDir: 'dist',  // Default build output directory
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000', // L'URL de votre serveur backend
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
 });
