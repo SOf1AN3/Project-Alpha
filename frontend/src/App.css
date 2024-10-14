@@ -36,7 +36,7 @@ header {
   justify-content: center;
   gap: 40px;
   list-style: none;
-  margin-left: 100px;
+  /* margin-left: 100px; */
 }
 
 a {
@@ -167,6 +167,11 @@ h1 {
 .exit-button img {
   width: 30px;
   height: 30px;
+}
+
+h5 {
+  font-size: 18px;
+  font-weight: 200;
 }
 
 /* Media query for mobile screens */

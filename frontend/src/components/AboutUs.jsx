@@ -6,7 +6,7 @@ const AboutUs = () => {
           <div className="container-about">
                <h1 className='title'>About Us</h1>
                <h1>Votre partenaire en consulting et développement</h1>
-               <p>“Depuis [nombre d’années], MYKS accompagne les entreprises et les particuliers dans leur croissance en offrant des solutions de consulting, de formation et d’accompagnement digital. Notre équipe d’experts vous aide à relever les défis actuels du marché et à développer des stratégies gagnantes.”</p>
+               <p>“Depuis 2022, Tiberium Consulting accompagne les entreprises et les particuliers dans leur croissance en offrant des solutions de consulting, de formation et d’accompagnement digital. Notre équipe d’experts vous aide à relever les défis actuels du marché et à développer des stratégies gagnantes.”</p>
 
                <h1>Notre approche :</h1>
                <ul>
