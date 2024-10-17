@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from '../components/Header'
-import Footer from '../components/Footer'
 
 
 const Home = () => {
@@ -11,7 +10,6 @@ const Home = () => {
                <div className='background-pos'>
                     <h1 className='home-title no-select'>More than just a solution</h1>
                </div>
-
           </div>
      )
 }

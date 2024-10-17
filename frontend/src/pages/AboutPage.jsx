@@ -3,7 +3,6 @@ import Header from '../components/Header'
 import AboutUs from '../components/AboutUs'
 import '../styles/expats.css'
 import contactVideo from '../assets/expats-cmp.mp4'
-import Footer from '../components/Footer'
 
 const AboutPage = () => {
      return (
