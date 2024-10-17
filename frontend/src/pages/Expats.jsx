@@ -19,7 +19,6 @@ const Expats = () => {
                     <Header />
                     <ExpatsServices />
                </div>
-               <Footer />
           </div>
      )
 }

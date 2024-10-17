@@ -9,17 +9,16 @@
 }
 
 .contact-form {
-     background-color: rgba(0, 0, 0, 0);
+     background-color: transparent;
      padding: 1.5rem;
      border-radius: 10px;
      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
      width: 100%;
      max-width: 550px;
-     /* Increased from 400px */
 }
 
 .contact-form h1 {
-     color: #ffffff;
+     color: #fff;
      text-align: center;
      margin-bottom: 1.8rem;
      font-size: 2rem;
@@ -29,43 +28,39 @@
      display: flex;
      flex-direction: column;
      align-items: center;
-     /* Center align form elements */
 }
 
 .contact-form .text-input {
      width: 100%;
      max-width: 400px;
-     /* Set a max-width for inputs */
      padding: 1rem;
      margin-bottom: 1.2rem;
      border: none;
      border-radius: 6px;
-     background-color: #333333;
+     background-color: #333;
      opacity: 0.7;
-     color: #ffffff;
+     color: #fff;
      font-size: 1rem;
 }
 
 .contact-form .text-input::placeholder {
-     color: #aaaaaa;
+     color: #aaa;
 }
 
 .contact-form textarea.text-input {
      resize: none;
      min-height: 150px;
      width: 100%;
-     /* Allow textarea to take full width of form */
 }
 
 .contact-form button {
      width: 100%;
      max-width: 200px;
-     /* Match input max-width */
      padding: 1rem;
      border: none;
      border-radius: 6px;
-     background-color: #ffffff;
-     color: #000000;
+     background-color: #fff;
+     color: #000;
      font-size: 1rem;
      cursor: pointer;
      transition: background-color 0.3s ease;

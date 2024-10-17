@@ -14,8 +14,7 @@ const Header = () => {
      return (
           <div className='no-select'>
                <header className={isMenuOpen ? 'show-menu menu-open' : ''}>
-                    {/* <a draggable="false" href="/home"><img draggable='false' className="logo" src={logo} alt="Logo" /></a> */}
-                    <a draggable="false" href="/home"><h5>Tiberium Consulting</h5></a>
+                    <a draggable="false" href="/home"><h5 className='logo-text'>Tiberium</h5></a>
                     <ul className="header-list">
                          <li><a draggable="false" href="/home">Home</a></li>
                          <li><a draggable="false" href="/services">Services</a></li>

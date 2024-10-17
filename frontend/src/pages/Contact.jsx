@@ -2,7 +2,6 @@ import React from 'react'
 import Header from '../components/Header'
 import ContactForm from '../components/ContactForm'
 import contactVideo from '../assets/expats-cmp.mp4'
-import Footer from '../components/Footer'
 
 const Contact = () => {
      return (
@@ -28,7 +27,6 @@ const Contact = () => {
                </video>
                <Header />
                <ContactForm />
-               <Footer />
           </div>
      )
 }

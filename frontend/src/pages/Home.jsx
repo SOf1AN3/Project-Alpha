@@ -11,7 +11,7 @@ const Home = () => {
                <div className='background-pos'>
                     <h1 className='home-title no-select'>More than just a solution</h1>
                </div>
-               <Footer />
+
           </div>
      )
 }

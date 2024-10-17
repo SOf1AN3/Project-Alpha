@@ -22,7 +22,6 @@ const AboutPage = () => {
                          <Header />
                          <AboutUs />
                     </div>
-                    <Footer />
                </div>
 
           </>

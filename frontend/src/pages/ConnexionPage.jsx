@@ -13,7 +13,6 @@ const ConnexionPage = () => {
                </video>
                <Header />
                <Connexion />
-               <Footer />
           </>
      )
 }

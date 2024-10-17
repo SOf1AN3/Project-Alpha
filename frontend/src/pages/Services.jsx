@@ -61,7 +61,6 @@ const Services = () => {
                )}
                <Header />
                <Cards />
-               <Footer />
           </div>
      )
 }

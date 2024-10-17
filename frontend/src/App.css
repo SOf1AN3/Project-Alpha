@@ -243,6 +243,19 @@ h5 {
   ul a:hover {
     font-size: 1.8rem;
   }
+
+}
+
+@media (max-width: 450px) {
+  .logo-text {
+    /* display: none; */
+    display: none;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 /* Keyframes for fade-in and fade-out animations */
