@@ -1,6 +1,7 @@
 import Header from '../components/Header'
 import ExpatsServices from '../components/ExpatsServices'
 import expatsVideo from '../assets/expats-cmp.mp4'
+import Footer from '../components/Footer'
 
 const Expats = () => {
      return (
@@ -18,6 +19,7 @@ const Expats = () => {
                     <Header />
                     <ExpatsServices />
                </div>
+               <Footer />
           </div>
      )
 }

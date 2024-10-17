@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '../components/Header'
 import Connexion from '../components/Connexion'
 import backgroundVideo from '../assets/expats-cmp.mp4'
+import Footer from '../components/Footer'
 
 const ConnexionPage = () => {
      return (
@@ -12,6 +13,7 @@ const ConnexionPage = () => {
                </video>
                <Header />
                <Connexion />
+               <Footer />
           </>
      )
 }

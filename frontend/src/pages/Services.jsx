@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import Cards from '../components/Cards'
 import Header from '../components/Header'
 import servicesVideo from '../assets/expats-cmp.mp4'
+import Footer from '../components/Footer'
 
 const Services = () => {
      const videoRef = useRef(null);
@@ -60,6 +61,7 @@ const Services = () => {
                )}
                <Header />
                <Cards />
+               <Footer />
           </div>
      )
 }

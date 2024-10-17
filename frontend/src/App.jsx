@@ -26,7 +26,7 @@ function App() {
         <Route path="/expats" element={<Expats />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/admin/users" element={<AdminPanel />} />
       </Routes>
     </Router>
   )
