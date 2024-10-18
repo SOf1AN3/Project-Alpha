@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import AboutPage from './pages/AboutPage';
 import InscriptionPage from './pages/InscriptionPage';
 import AdminPanel from './components/AdminPanel';
+import NotFoundPage from './pages/NotFoundPage';
 
 import './App.css';
 import './styles/about.css';
@@ -16,6 +17,7 @@ import './styles/services.css';
 import './styles/contact.css';
 import './styles/connexion.css';
 import './styles/expats.css';
+
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/inscription" element={<InscriptionPage />} />
           <Route path="/admin/users" element={<AdminPanel />} />
+          {/* always last */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
     </AuthProvider>
