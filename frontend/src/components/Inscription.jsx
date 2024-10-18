@@ -7,9 +7,10 @@ const Inscription = () => {
           password: '',
           confirmPassword: ''
      });
+     const [error, setError] = useState('');
 
      const handleSubmit = async (e) => {
-          e.preventDefault(); // Empêche le rechargement de la page
+          e.preventDefault();
 
           try {
                const response = await fetch('/api/signup', {
@@ -23,14 +24,13 @@ const Inscription = () => {
                const data = await response.json();
 
                if (!response.ok) {
-                    alert(data.error); // Affiche l'erreur
+                    setError(data.error);
                } else {
-                    // Redirection en cas de succès
                     window.location.href = '/contact';
                }
           } catch (error) {
                console.error('Erreur:', error);
-               alert('Erreur lors de l\'inscription');
+               setError('Erreur lors de l\'inscription');
           }
      };
 
@@ -46,6 +46,7 @@ const Inscription = () => {
                <div className='connexion-form'>
                     <form onSubmit={handleSubmit}>
                          <h1>Inscription</h1>
+                         {error && <div className="error-message">{error}</div>}
                          <input
                               type="email"
                               name="email"

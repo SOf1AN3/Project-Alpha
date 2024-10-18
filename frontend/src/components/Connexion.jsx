@@ -7,6 +7,7 @@ const Connexion = () => {
           password: '',
           rester: false
      });
+     const [error, setError] = useState('');
 
      const handleSubmit = async (e) => {
           e.preventDefault();
@@ -23,13 +24,13 @@ const Connexion = () => {
                const data = await response.json();
 
                if (!response.ok) {
-                    alert(data.error);
+                    setError(data.error);
                } else {
                     window.location.href = '/';
                }
           } catch (error) {
                console.error('Erreur:', error);
-               alert('Erreur lors de la connexion');
+               setError('Erreur lors de la connexion');
           }
      };
 
@@ -46,6 +47,7 @@ const Connexion = () => {
                <div className='connexion-form'>
                     <form onSubmit={handleSubmit}>
                          <h1>Connexion</h1>
+                         {error && <div className="error-message">{error}</div>}
                          <input
                               type="email"
                               name="email"

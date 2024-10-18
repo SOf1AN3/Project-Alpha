@@ -7,6 +7,8 @@ import '../App.css';
 
 const Header = () => {
      const [isMenuOpen, setMenuOpen] = useState(false);
+     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+     const [isFadingOut, setIsFadingOut] = useState(false);
      const { isLoggedIn, logout } = useAuth();
      const navigate = useNavigate();
 
@@ -14,17 +16,31 @@ const Header = () => {
           setMenuOpen(!isMenuOpen);
      };
 
-     const handleAuthClick = async () => {
+     const handleAuthClick = () => {
           if (isLoggedIn) {
-               try {
-                    await logout();
-                    navigate('/home');
-               } catch (error) {
-                    console.error('Erreur lors de la déconnexion:', error);
-               }
+               setShowLogoutConfirm(true);
           } else {
                navigate('/connexion');
           }
+     };
+
+     const confirmLogout = async () => {
+          try {
+               await logout();
+               navigate('/home');
+          } catch (error) {
+               console.error('Erreur lors de la déconnexion:', error);
+          } finally {
+               setShowLogoutConfirm(false);
+          }
+     };
+
+     const cancelLogout = () => {
+          setIsFadingOut(true);
+          setTimeout(() => {
+               setShowLogoutConfirm(false);
+               setIsFadingOut(false);
+          }, 300); // Duration of the fade-out animation
      };
 
      return (
@@ -55,6 +71,16 @@ const Header = () => {
                          <button className="exit-button" onClick={toggleMenu}>
                               <img draggable="false" src={exitIcon} alt="Exit" />
                          </button>
+                    )}
+
+                    {showLogoutConfirm && (
+                         <div className="logout-confirm-overlay">
+                              <div className={`logout-confirm-popup ${isFadingOut ? 'fade-out' : ''}`}>
+                                   <p>Voulez-vous vous déconnecter?</p>
+                                   <button className="confirm-btn" onClick={confirmLogout}>Oui</button>
+                                   <button className="cancel-btn" onClick={cancelLogout}>Non</button>
+                              </div>
+                         </div>
                     )}
                </header>
           </div>
