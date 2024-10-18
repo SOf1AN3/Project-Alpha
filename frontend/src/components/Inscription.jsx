@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import '../styles/connexion.css';
 
-const Connexion = () => {
+const Inscription = () => {
      const [formData, setFormData] = useState({
           email: '',
           password: '',
-          rester: false
+          confirmPassword: ''
      });
 
      const handleSubmit = async (e) => {
-          e.preventDefault();
+          e.preventDefault(); // Empêche le rechargement de la page
 
           try {
-               const response = await fetch('/api/login', {
+               const response = await fetch('/api/signup', {
                     method: 'POST',
                     headers: {
                          'Content-Type': 'application/json'
@@ -23,21 +23,21 @@ const Connexion = () => {
                const data = await response.json();
 
                if (!response.ok) {
-                    alert(data.error);
+                    alert(data.error); // Affiche l'erreur
                } else {
-                    window.location.href = '/dashboard';
+                    // Redirection en cas de succès
+                    window.location.href = '/contact';
                }
           } catch (error) {
                console.error('Erreur:', error);
-               alert('Erreur lors de la connexion');
+               alert('Erreur lors de l\'inscription');
           }
      };
 
      const handleChange = (e) => {
-          const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
           setFormData({
                ...formData,
-               [e.target.name]: value
+               [e.target.name]: e.target.value
           });
      };
 
@@ -45,7 +45,7 @@ const Connexion = () => {
           <div className="connexion-container">
                <div className='connexion-form'>
                     <form onSubmit={handleSubmit}>
-                         <h1>Connexion</h1>
+                         <h1>Inscription</h1>
                          <input
                               type="email"
                               name="email"
@@ -53,7 +53,6 @@ const Connexion = () => {
                               placeholder="Email"
                               value={formData.email}
                               onChange={handleChange}
-                              required
                          />
                          <input
                               type="password"
@@ -62,27 +61,25 @@ const Connexion = () => {
                               placeholder="Mot de passe"
                               value={formData.password}
                               onChange={handleChange}
-                              required
+                         />
+                         <input
+                              type="password"
+                              name="confirmPassword"
+                              className='text-input'
+                              placeholder="Confirmez votre Mot de passe"
+                              value={formData.confirmPassword}
+                              onChange={handleChange}
                          />
                          <div className="rester-container">
-                              <input
-                                   type="checkbox"
-                                   name="rester"
-                                   id="rester"
-                                   className='rester'
-                                   checked={formData.rester}
-                                   onChange={handleChange}
-                              />
-                              <label htmlFor="rester" className="rester-label">
-                                   Rester connecté
-                              </label>
+                              <input type="checkbox" name="rester" id="rester" className='rester' />
+                              <label htmlFor="rester" className="rester-label">Rester connecté</label>
                          </div>
-                         <button type="submit">Se Connecter</button>
-                         <a className='inscrire' href="/inscription">S'inscrire ?</a>
+                         <button type="submit">S'inscrire</button>
+                         <a className='inscrire' href="/connexion">Se connecter ?</a>
                     </form>
                </div>
           </div>
      );
 };
 
-export default Connexion;
+export default Inscription;

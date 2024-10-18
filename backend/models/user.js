@@ -3,10 +3,6 @@ const Schema = mongoose.Schema
 const { isEmail } = require('validator')
 
 const userSchema = new Schema({
-     name: {
-          type: String,
-          required: true,
-     },
      email: {
           type: String,
           required: true,
@@ -18,6 +14,11 @@ const userSchema = new Schema({
           required: true,
           unique: true,
           minlength: 6
+     },
+     isAdmin: {
+          type: Boolean,
+          required: true,
+          default: false
      }
 })
 

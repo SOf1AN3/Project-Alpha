@@ -6,6 +6,7 @@ import ConnexionPage from './pages/ConnexionPage';
 import Expats from './pages/Expats';
 import Contact from './pages/Contact';
 import AboutPage from './pages/AboutPage';
+import InscriptionPage from './pages/InscriptionPage';
 
 import './App.css';
 import './styles/about.css';
@@ -26,6 +27,7 @@ function App() {
         <Route path="/expats" element={<Expats />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/inscription" element={<InscriptionPage />} />
         <Route path="/admin/users" element={<AdminPanel />} />
       </Routes>
     </Router>
