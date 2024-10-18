@@ -25,7 +25,7 @@ const Connexion = () => {
                if (!response.ok) {
                     alert(data.error);
                } else {
-                    window.location.href = '/dashboard';
+                    window.location.href = '/';
                }
           } catch (error) {
                console.error('Erreur:', error);
