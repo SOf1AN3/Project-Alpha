@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
      const [user, setUser] = useState(null);
 
      // Configure axios
-     axios.defaults.withCredentials = true;
      axios.defaults.baseURL = 'http://localhost:5000'; // Ajustez selon votre PORT backend
 
      // Vérifier l'état de l'authentification au chargement
@@ -17,16 +16,23 @@ export const AuthProvider = ({ children }) => {
      }, []);
 
      const checkAuth = async () => {
-          try {
-               const response = await axios.get('/api/check-auth');
-               if (response.data.authenticated) {
-                    setIsLoggedIn(true);
-                    setUser(response.data.user);
+          const token = localStorage.getItem('token');
+          if (token) {
+               try {
+                    const response = await axios.get('/api/check-auth', {
+                         headers: {
+                              'Authorization': token
+                         }
+                    });
+                    if (response.data.authenticated) {
+                         setIsLoggedIn(true);
+                         setUser(response.data.user);
+                    }
+               } catch (error) {
+                    console.error('Erreur de vérification auth:', error);
+                    setIsLoggedIn(false);
+                    setUser(null);
                }
-          } catch (error) {
-               console.error('Erreur de vérification auth:', error);
-               setIsLoggedIn(false);
-               setUser(null);
           }
      };
 
@@ -38,6 +44,7 @@ export const AuthProvider = ({ children }) => {
                     rester
                });
 
+               localStorage.setItem('token', response.data.token);
                setIsLoggedIn(true);
                setUser(response.data.user);
                return response.data;
@@ -46,24 +53,25 @@ export const AuthProvider = ({ children }) => {
           }
      };
 
-     const logout = async () => {
-          try {
-               await axios.post('/api/logout');
-               setIsLoggedIn(false);
-               setUser(null);
-          } catch (error) {
-               console.error('Erreur de déconnexion:', error);
-          }
+     const logout = () => {
+          localStorage.removeItem('token');
+          setIsLoggedIn(false);
+          setUser(null);
      };
 
-     const signup = async (email, password, confirmPassword, rester) => {
+     const signup = async (name, email, password, confirmPassword, rester) => {
           try {
                const response = await axios.post('/api/signup', {
+                    name,
                     email,
                     password,
                     confirmPassword,
                     rester
                });
+
+               localStorage.setItem('token', response.data.token);
+               setIsLoggedIn(true);
+               setUser(response.data.user);
                return response.data;
           } catch (error) {
                throw error.response.data;

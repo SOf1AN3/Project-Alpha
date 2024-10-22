@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/connexion.css';
 
 const Inscription = () => {
+     const { signup } = useAuth();
      const [formData, setFormData] = useState({
+          name: '',
           email: '',
           password: '',
           confirmPassword: ''
@@ -13,31 +16,18 @@ const Inscription = () => {
           e.preventDefault();
 
           try {
-               const response = await fetch('/api/signup', {
-                    method: 'POST',
-                    headers: {
-                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-               });
-
-               const data = await response.json();
-
-               if (!response.ok) {
-                    setError(data.error);
-               } else {
-                    window.location.href = '/contact';
-               }
+               const data = await signup(formData.name, formData.email, formData.password, formData.confirmPassword);
+               window.location.href = '/contact';
           } catch (error) {
-               console.error('Erreur:', error);
-               setError('Erreur lors de l\'inscription');
+               setError(error.error);
           }
      };
 
      const handleChange = (e) => {
+          const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
           setFormData({
                ...formData,
-               [e.target.name]: e.target.value
+               [e.target.name]: value
           });
      };
 
@@ -47,6 +37,14 @@ const Inscription = () => {
                     <form onSubmit={handleSubmit}>
                          <h1>Inscription</h1>
                          {error && <div className="error-message">{error}</div>}
+                         <input
+                              type="text"
+                              name="name"
+                              className='text-input'
+                              placeholder="Name"
+                              value={formData.name}
+                              onChange={handleChange}
+                         />
                          <input
                               type="email"
                               name="email"
@@ -72,7 +70,7 @@ const Inscription = () => {
                               onChange={handleChange}
                          />
                          <div className="rester-container">
-                              <input type="checkbox" name="rester" id="rester" className='rester' />
+                              <input type="checkbox" name="rester" id="rester" className='rester' onChange={handleChange} />
                               <label htmlFor="rester" className="rester-label">Rester connecté</label>
                          </div>
                          <button type="submit">S'inscrire</button>

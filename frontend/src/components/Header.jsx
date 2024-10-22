@@ -53,8 +53,9 @@ const Header = () => {
                          <li><a draggable="false" href="/home">Home</a></li>
                          <li><a draggable="false" href="/services">Services</a></li>
                          <li><a draggable="false" href="/expats">Expats</a></li>
-                         <li><a draggable="false" href="/contact">Contact Us</a></li>
-                         <li><a draggable="false" href="/about">About Us</a></li>
+                         <li><a draggable="false" href="/contact">Contact</a></li>
+                         <li><a draggable="false" href="/about">About</a></li>
+                         {isLoggedIn && <li><a draggable="false" href="/dashboard">Dashboard</a></li>}
                     </ul>
                     <button className="menu-button" onClick={toggleMenu}>
                          <img draggable="false" src={menuIcon} alt="Menu" />

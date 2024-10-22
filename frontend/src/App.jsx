@@ -8,7 +8,7 @@ import Expats from './pages/Expats';
 import Contact from './pages/Contact';
 import AboutPage from './pages/AboutPage';
 import InscriptionPage from './pages/InscriptionPage';
-import AdminPanel from './components/AdminPanel';
+import AdminPanel from './pages/AdminPanel';
 import NotFoundPage from './pages/NotFoundPage';
 
 import './App.css';

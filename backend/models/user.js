@@ -3,6 +3,11 @@ const Schema = mongoose.Schema
 const { isEmail } = require('validator')
 
 const userSchema = new Schema({
+     name: {
+          type: String,
+          required: true,
+          minlength: 3
+     },
      email: {
           type: String,
           required: true,
@@ -15,7 +20,13 @@ const userSchema = new Schema({
           unique: true,
           minlength: 6
      },
-     isAdmin: {
+     type: {
+          type: String,
+          required: true,
+          enum: ['simple', 'advanced', 'premium', 'admin'],
+          default: 'simple'
+     },
+     isConfirmed: {
           type: Boolean,
           required: true,
           default: false

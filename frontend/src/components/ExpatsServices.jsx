@@ -68,8 +68,8 @@ const ExpatsServices = () => {
      return (
           <div className="container-qst">
                <h1 className='title'>Offre de Service pour les Expats Souhaitant Revenir en Algérie</h1>
-               <h2>Bienvenue chez MYKS
-                    Vous êtes un expatrié algérien et vous envisagez de revenir vivre en Algérie ? Chez MYKS, nous comprenons que le retour dans votre pays d'origine peut être une étape à la fois excitante et complexe. C'est pourquoi nous avons créé une offre de service dédiée pour vous accompagner tout au long de ce processus.
+               <h2>Bienvenue chez Tiberium Consulting
+                    Vous êtes un expatrié algérien et vous envisagez de revenir vivre en Algérie ? Chez Tiberium Consulting, nous comprenons que le retour dans votre pays d'origine peut être une étape à la fois excitante et complexe. C'est pourquoi nous avons créé une offre de service dédiée pour vous accompagner tout au long de ce processus.
                </h2>
                <h1>Notre Mission</h1>
                <p>Faciliter votre retour en Algérie en vous offrant une assistance complète, personnalisée et adaptée à vos besoins, afin que votre transition se déroule en toute sérénité.</p>
@@ -89,7 +89,7 @@ const ExpatsServices = () => {
                <h1 className='contactez-h1'>Contactez-nous</h1>
                <p>Prêt à faire le grand saut et revenir en Algérie ? <a className='contactez-nous' href='/contact'>Contactez-nous</a> dès aujourd'hui pour une consultation gratuite. Nous serons ravis de discuter de votre projet et de vous montrer comment nous pouvons vous aider à faire de ce retour une réussite.
 
-                    Votre retour en Algérie est notre priorité. Chez MYKS, nous faisons tout pour que vous vous sentiez à nouveau chez vous, dès le premier jour.
+                    Votre retour en Algérie est notre priorité. Chez Tiberium Consulting, nous faisons tout pour que vous vous sentiez à nouveau chez vous, dès le premier jour.
                </p>
           </div>
      );

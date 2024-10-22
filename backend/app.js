@@ -1,9 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
-const session = require('express-session'); // Ajout de l'import de session
-const MongoStore = require('connect-mongo'); // Ajout de l'import de connect-mongo
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const Message = require('./models/message');
@@ -11,7 +10,7 @@ const User = require('./models/user');
 
 const app = express();
 
-// Configuration de CORS (à mettre AVANT session)
+// Configuration de CORS
 app.use(cors({
      origin: 'http://localhost:5173',
      methods: ['GET', 'POST'],
@@ -19,31 +18,9 @@ app.use(cors({
      credentials: true,
 }));
 
-// Parsers (à mettre AVANT session)
+// Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Configuration de la session (APRÈS cors et parsers, AVANT les routes)
-app.use(session({
-     secret: process.env.SESSION_SECRET || 'votre_secret_key', // Utilisez une variable d'environnement
-     resave: false,
-     saveUninitialized: false,
-     store: MongoStore.create({
-          mongoUrl: process.env.MONGO_URI,
-          collectionName: 'sessions'
-     }),
-     cookie: {
-          secure: process.env.NODE_ENV === 'production',
-          httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000,
-          sameSite: 'lax'
-     }
-}));
-
-app.use((req, res, next) => {
-     console.log('Session:', req.session);
-     next();
-});
 
 // Connexion MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -63,10 +40,7 @@ const validateSignupData = (req, res, next) => {
 
      // Validation de l'email
      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-     console.log('Test email:', emailRegex.test(email)); // Log du résultat du test
-
      if (!emailRegex.test(email)) {
-          console.log('Email invalide:', email);
           return res.status(400).json({ error: "Format d'email invalide" });
      }
 
@@ -100,35 +74,26 @@ const validateLoginData = (req, res, next) => {
      next();
 };
 
-// ________________________________________________________________________________________________
+// Générer un token JWT
+const generateToken = (user) => {
+     return jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '30d' });
+};
 
-app.get("/", (req, res) => {
-     res.redirect("/home");
-});
+// Middleware pour vérifier le token JWT
+const authenticateToken = (req, res, next) => {
+     const token = req.headers['authorization'];
+     if (!token) return res.sendStatus(401);
 
-app.post("/api/message", async (req, res) => {
-     console.log("Route /api/message appelée");
-     const { name, email, message } = req.body
-     try {
-          if (!name || !email || !message) {
-               console.log('Champs manquants')
-               return res.status(400).json({ message: "Tous les champs sont requis" })
-          }
-          console.log('Tentative de création du message')
-          const newMessage = await Message.create({ name, email, message })
-          console.log('Message créé:', newMessage)
-          return res.status(201).json({ message: "Message créé avec succès", data: newMessage })
-     }
-     catch (error) {
-          console.error('Erreur serveur:', error)
-          return res.status(500).json({ message: "Erreur lors de la création du message", error: error.message })
-     }
-})
+     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+          if (err) return res.sendStatus(403);
+          req.user = user;
+          next();
+     });
+};
 
-// Route POST pour l'inscription
 app.post('/api/signup', validateSignupData, async (req, res) => {
      try {
-          const { email, password, rester } = req.body;
+          const { name, email, password } = req.body;
 
           // Vérifier si l'utilisateur existe déjà
           const existingUser = await User.findOne({ email });
@@ -142,24 +107,25 @@ app.post('/api/signup', validateSignupData, async (req, res) => {
 
           // Création du nouvel utilisateur
           const newUser = new User({
+               name,
                email,
-               password: hashedPassword,
-               stayConnected: rester === 'on'
+               password: hashedPassword
           });
 
           // Sauvegarde dans la base de données
           await newUser.save();
 
-          // Création d'une session si "rester connecté" est coché
-          if (rester === 'on') {
-               req.session.userId = newUser._id;
-               req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 jours
-          }
+          // Générer un token JWT
+          const token = generateToken(newUser);
 
           // Réponse réussie
           res.status(201).json({
                message: "Inscription réussie",
-               redirect: "/"
+               token,
+               user: {
+                    email: newUser.email,
+                    id: newUser._id
+               }
           });
 
      } catch (error) {
@@ -170,7 +136,7 @@ app.post('/api/signup', validateSignupData, async (req, res) => {
 
 app.post('/api/login', validateLoginData, async (req, res) => {
      try {
-          const { email, password, rester } = req.body;
+          const { email, password } = req.body;
 
           // Recherche de l'utilisateur
           const user = await User.findOne({ email });
@@ -188,41 +154,17 @@ app.post('/api/login', validateLoginData, async (req, res) => {
                });
           }
 
-          // Initialisation de la session
-          try {
-               req.session.userId = user._id;
-               req.session.email = user.email;
+          // Générer un token JWT
+          const token = generateToken(user);
 
-               if (rester) {
-                    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+          res.json({
+               message: "Connexion réussie",
+               token,
+               user: {
+                    email: user.email,
+                    id: user._id
                }
-
-               // Attendre que la session soit sauvegardée
-               await new Promise((resolve, reject) => {
-                    req.session.save((err) => {
-                         if (err) reject(err);
-                         resolve();
-                    });
-               });
-
-               // Mise à jour du statut "rester connecté"
-               await User.findByIdAndUpdate(user._id, { stayConnected: rester });
-
-               res.json({
-                    message: "Connexion réussie",
-                    redirect: "/",
-                    user: {
-                         email: user.email,
-                         id: user._id
-                    }
-               });
-
-          } catch (sessionError) {
-               console.error('Erreur session:', sessionError);
-               return res.status(500).json({
-                    error: "Erreur lors de la création de la session"
-               });
-          }
+          });
 
      } catch (error) {
           console.error('Erreur connexion:', error);
@@ -232,15 +174,9 @@ app.post('/api/login', validateLoginData, async (req, res) => {
      }
 });
 
-app.get('/api/check-auth', async (req, res) => {
+app.get('/api/check-auth', authenticateToken, async (req, res) => {
      try {
-          if (!req.session.userId) {
-               return res.status(401).json({
-                    authenticated: false
-               });
-          }
-
-          const user = await User.findById(req.session.userId);
+          const user = await User.findById(req.user.id);
           if (!user) {
                return res.status(401).json({
                     authenticated: false
@@ -263,16 +199,17 @@ app.get('/api/check-auth', async (req, res) => {
      }
 });
 
-// Route pour la déconnexion
 app.post('/api/logout', (req, res) => {
-     req.session.destroy(err => {
-          if (err) {
-               return res.status(500).json({
-                    error: "Erreur lors de la déconnexion"
-               });
-          }
-          res.json({ message: "Déconnexion réussie" });
-     });
+     // Pour JWT, la déconnexion est gérée côté client en supprimant le token
+     res.json({ message: "Déconnexion réussie" });
 });
 
-
+app.get('/api/users', authenticateToken, async (req, res) => {
+     try {
+          const users = await User.find({}, 'email'); // Fetch all users and select only the email field
+          res.status(200).json(users);
+     } catch (error) {
+          console.error('Error fetching users:', error);
+          res.status(500).json({ error: 'Error fetching users' });
+     }
+});

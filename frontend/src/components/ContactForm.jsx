@@ -1,40 +1,52 @@
-import React, { useState } from 'react'
-import '../styles/contact.css'
+import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
+import '../styles/contact.css';
 
 const ContactForm = () => {
      const [formData, setFormData] = useState({
           name: '',
           email: '',
           message: ''
-     })
+     });
+     const [isLoading, setIsLoading] = useState(false);
+     const [isSubmitted, setIsSubmitted] = useState(false);
 
      const handleChange = (e) => {
-          setFormData({ ...formData, [e.target.name]: e.target.value })
-     }
+          setFormData({ ...formData, [e.target.name]: e.target.value });
+     };
 
      const handleSubmit = async (e) => {
-          e.preventDefault()
+          e.preventDefault();
+          setIsLoading(true);
+
           try {
-               const response = await fetch('/api/message', {
-                    method: 'POST',
-                    headers: {
-                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-               })
+               const templateParams = {
+                    name: formData.name,
+                    email: formData.email,
+                    message: formData.message
+               };
 
-               const data = await response.json()
+               const response = await emailjs.send(
+                    'service_wp60jaa',
+                    'template_hb116m5',
+                    templateParams,
+                    '80ZdQFGwY-B-CNLEr'
+               );
 
-               if (response.ok) {
-                    alert('Message envoyé avec succès !')
-                    setFormData({ name: '', email: '', message: '' })
+               if (response.status === 200) {
+                    setFormData({ name: '', email: '', message: '' });
+                    setIsLoading(false);
+                    setIsSubmitted(true);
+                    setTimeout(() => setIsSubmitted(false), 3000);
                } else {
-                    alert(`Erreur lors de l'envoi du message: ${data.message || 'Erreur inconnue'}`)
+                    alert(`Erreur lors de l'envoi du message: ${response.text}`);
+                    setIsLoading(false);
                }
           } catch (error) {
-               alert('Erreur lors de l\'envoi du message: ' + error.message)
+               alert('Erreur lors de l\'envoi du message: ' + error.message);
+               setIsLoading(false);
           }
-     }
+     };
 
      return (
           <div className="contact-container">
@@ -48,6 +60,7 @@ const ContactForm = () => {
                               onChange={handleChange}
                               className='text-input'
                               placeholder='Full Name'
+                              disabled={isLoading}
                          />
                          <input
                               type="email"
@@ -56,6 +69,7 @@ const ContactForm = () => {
                               onChange={handleChange}
                               className='text-input'
                               placeholder="Email"
+                              disabled={isLoading}
                          />
                          <textarea
                               name="message"
@@ -63,12 +77,21 @@ const ContactForm = () => {
                               onChange={handleChange}
                               className='text-input'
                               placeholder='Message...'
+                              disabled={isLoading}
                          ></textarea>
-                         <button type="submit">Envoyer</button>
+                         <button type="submit" disabled={isLoading}>
+                              {isLoading ? (
+                                   <div className="loading-spinner"></div>
+                              ) : isSubmitted ? (
+                                   'Envoyé!'
+                              ) : (
+                                   'Envoyer'
+                              )}
+                         </button>
                     </form>
                </div>
           </div>
-     )
-}
+     );
+};
 
-export default ContactForm
+export default ContactForm;

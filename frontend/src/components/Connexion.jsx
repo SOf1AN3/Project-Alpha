@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/connexion.css';
 
 const Connexion = () => {
+     const { login } = useAuth();
      const [formData, setFormData] = useState({
           email: '',
           password: '',
@@ -13,24 +15,10 @@ const Connexion = () => {
           e.preventDefault();
 
           try {
-               const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-               });
-
-               const data = await response.json();
-
-               if (!response.ok) {
-                    setError(data.error);
-               } else {
-                    window.location.href = '/';
-               }
+               const data = await login(formData.email, formData.password, formData.rester);
+               window.location.href = '/';
           } catch (error) {
-               console.error('Erreur:', error);
-               setError('Erreur lors de la connexion');
+               setError(error.error);
           }
      };
 
