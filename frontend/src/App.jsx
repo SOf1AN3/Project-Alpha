@@ -10,6 +10,7 @@ import AboutPage from './pages/AboutPage';
 import InscriptionPage from './pages/InscriptionPage';
 import AdminPanel from './pages/AdminPanel';
 import NotFoundPage from './pages/NotFoundPage';
+import Messages from './pages/Messages';
 
 import './App.css';
 import './styles/about.css';
@@ -31,6 +32,7 @@ function App() {
           <Route path="/expats" element={<Expats />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/dashboard/chat" element={<Messages />} />
           <Route path="/inscription" element={<InscriptionPage />} />
           <Route path="/admin/users" element={<AdminPanel />} />
           {/* always last */}

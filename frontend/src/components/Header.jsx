@@ -55,7 +55,7 @@ const Header = () => {
                          <li><a draggable="false" href="/expats">Expats</a></li>
                          <li><a draggable="false" href="/contact">Contact</a></li>
                          <li><a draggable="false" href="/about">About</a></li>
-                         {isLoggedIn && <li><a draggable="false" href="/dashboard">Dashboard</a></li>}
+                         {isLoggedIn && <li><a draggable="false" href="/dashboard/chat">Dashboard</a></li>}
                     </ul>
                     <button className="menu-button" onClick={toggleMenu}>
                          <img draggable="false" src={menuIcon} alt="Menu" />
