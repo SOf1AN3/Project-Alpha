@@ -32,9 +32,9 @@ function App() {
           <Route path="/expats" element={<Expats />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/dashboard/chat" element={<Messages />} />
+          {/* <Route path="/dashboard/chat" element={<Messages />} /> */}
           <Route path="/inscription" element={<InscriptionPage />} />
-          <Route path="/admin/users" element={<AdminPanel />} />
+          {/* <Route path="/admin/users" element={<AdminPanel />} /> */}
           {/* always last */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
