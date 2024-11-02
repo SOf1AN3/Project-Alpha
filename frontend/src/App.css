@@ -5,6 +5,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
+video::-webkit-media-controls {
+  display: none !important;
+}
+
 body {
   background-color: rgb(0, 0, 0);
 }
