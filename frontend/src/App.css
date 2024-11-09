@@ -133,7 +133,7 @@ h1 {
   top: 0;
   left: 0;
   background-image:
-    radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.8) 100%),
+    radial-gradient(circle, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.9) 100%),
     url('./assets/background.jpg');
   background-size: cover;
   background-position: center;
@@ -149,7 +149,7 @@ h1 {
   text-align: center;
   font-size: 70px;
   color: white;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .no-select {
