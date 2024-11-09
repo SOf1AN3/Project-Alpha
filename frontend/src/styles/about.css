@@ -36,3 +36,16 @@
 .about_approach_list p {
      margin-bottom: 10px;
 }
+
+.background-fixe {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-size: cover;
+     background-position: center;
+     z-index: -1;
+     opacity: 0.1;
+     /* Ajustez l'opacité selon vos besoins */
+}

@@ -1,16 +1,15 @@
 import React from 'react'
 import Header from '../components/Header'
 import ContactForm from '../components/ContactForm'
-import contactVideo from '../assets/expats-cmp.mp4'
+import backgroundImage from '../assets/background.jpg'
 
 const Contact = () => {
      return (
           <div style={{ position: 'relative', overflow: 'hidden', height: '100vh' }}>
-               <video
-                    autoPlay
-                    loop
-                    muted
+               <div
+                    className="background-fixe"
                     style={{
+                         backgroundImage: `url(${backgroundImage})`,
                          position: 'absolute',
                          top: '50%',
                          left: '50%',
@@ -19,12 +18,9 @@ const Contact = () => {
                          objectFit: 'cover',
                          transform: 'translate(-50%, -50%)',
                          zIndex: '-1',
-                         opacity: '0.9'
+                         opacity: '0.1'
                     }}
-               >
-                    <source src={contactVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-               </video>
+               ></div>
                <Header />
                <ContactForm />
           </div>
