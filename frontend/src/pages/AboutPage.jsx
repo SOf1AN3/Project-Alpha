@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import AboutUs from '../components/AboutUs'
 import '../styles/expats.css'
 import backgroundImage from '../assets/background.jpg'
+import Footer from '../components/Footer'
 
 const AboutPage = () => {
      return (
@@ -15,6 +16,7 @@ const AboutPage = () => {
                     <div className="relative z-10">
                          <Header />
                          <AboutUs />
+                         <Footer />
                     </div>
                </div>
           </>

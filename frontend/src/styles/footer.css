@@ -1,11 +1,19 @@
 footer {
      width: 100%;
      height: 30px;
+     background: linear-gradient(to bottom,
+               rgba(0, 0, 0, 0),
+               /* Rouge semi-transparent */
+               rgba(0, 0, 0, 1)
+               /* Bleu semi-transparent */
+          );
+     padding: 25px 50px;
+     padding-bottom: 50px;
 }
 
 footer ul {
      display: flex;
      justify-content: space-between;
      align-items: center;
-     padding: 0 50px;
+     margin-bottom: 25px;
 }

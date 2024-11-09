@@ -1,6 +1,7 @@
 import Header from '../components/Header'
 import ExpatsServices from '../components/ExpatsServices'
 import backgroundImage from '../assets/background.jpg'
+import Footer from '../components/Footer'
 
 const Expats = () => {
      return (
@@ -13,6 +14,7 @@ const Expats = () => {
                     <Header />
                     <ExpatsServices />
                </div>
+               <Footer />
           </div>
      )
 }

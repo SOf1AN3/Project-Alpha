@@ -13,7 +13,7 @@ i18n
          fr: { translation: translationFR },
          en: { translation: translationEN },
       },
-      fallbackLng: 'en', // Langue par défaut si la langue détectée n'est pas disponible
+      fallbackLng: 'ar', // Langue par défaut si la langue détectée n'est pas disponible
       detection: {
          // Méthodes de détection de la langue
          order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],

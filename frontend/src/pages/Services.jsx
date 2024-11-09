@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import Cards from '../components/Cards'
 import Header from '../components/Header'
 import backgroundImage from '../assets/background.jpg'
+import Footer from '../components/Footer'
 
 const Services = () => {
      return (
@@ -12,6 +13,7 @@ const Services = () => {
                ></div>
                <Header />
                <Cards />
+               <Footer />
           </div>
      )
 }

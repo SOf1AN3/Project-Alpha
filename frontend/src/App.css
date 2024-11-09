@@ -5,10 +5,6 @@
   font-family: "Montserrat", sans-serif;
 }
 
-video::-webkit-media-controls {
-  display: none !important;
-}
-
 body {
   background-color: rgb(0, 0, 0);
 }
@@ -183,7 +179,7 @@ h5 {
 }
 
 /* Media query for mobile screens */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .header.menu-open {
     background-color: rgba(0, 0, 0, 1);
   }
