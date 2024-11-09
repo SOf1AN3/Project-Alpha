@@ -6,15 +6,22 @@ import Footer from '../components/Footer'
 
 const Services = () => {
      return (
-          <div className="services-wrapper">
-               <div
-                    className="background-fixe"
-                    style={{ backgroundImage: `url(${backgroundImage})` }}
-               ></div>
-               <Header />
-               <Cards />
-               <Footer />
-          </div>
+          <>
+               <div className="services-wrapper">
+                    <div
+                         className="background-fixe"
+                         style={{ backgroundImage: `url(${backgroundImage})` }}
+                    ></div>
+                    <Header />
+                    <Cards />
+               </div>
+               <footer className='services-footer'>
+                    <ul>
+                         <li>Tiberium Consulting</li>
+                         <li>Copyrights © Tiberium Consulting 2024</li>
+                    </ul>
+               </footer>
+          </>
      )
 }
 

@@ -1,43 +1,19 @@
 .services-wrapper {
      position: relative;
      min-width: none;
-     min-height: 100vh;
+     min-height: fit-content;
      padding: 0;
-     height: auto;
+     height: 50px;
      z-index: 1;
-     overflow: hidden;
 }
 
-.background-video {
-     position: fixed;
-     top: 0;
-     left: 0;
-     width: 100%;
-     height: 100vh;
-     object-fit: cover;
-     z-index: -1;
 
-}
-
-/* Ensure video is visible */
-.services-wrapper::before {
-     content: '';
-     position: absolute;
-     top: 0;
-     left: 0;
-     right: 0;
-     bottom: 0;
-     background-color: rgba(0, 0, 0, 0);
-     /* Semi-transparent overlay */
-     z-index: -1;
-     overflow: hidden;
-}
 
 .services-title {
      color: white;
      font-weight: 300;
      text-align: center;
-     margin: 180px 0;
+     margin: 150px 0;
 }
 
 .services-container {
@@ -45,7 +21,7 @@
      grid-template-columns: repeat(4, 1fr);
      gap: 0px;
      transition: all 0.3s ease;
-     height: auto;
+     height: 0px;
 }
 
 .service-card {

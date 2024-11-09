@@ -15,7 +15,6 @@ const ConnexionPage = () => {
                <div className="connexion-content">
                     <Connexion />
                </div>
-               <Footer />
           </div>
      )
 }
