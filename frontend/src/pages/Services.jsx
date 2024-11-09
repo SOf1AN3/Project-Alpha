@@ -53,11 +53,11 @@ const Services = () => {
                     <source src={servicesVideo} type="video/mp4" />
                     Your browser does not support the video tag.
                </video>
-               {videoStatus !== 'Playing' && (
+               {/* {videoStatus !== 'Playing' && (
                     <div style={{ position: 'absolute', bottom: 0, left: 10, color: 'white', zIndex: 1000 }}>
                          Video status: {videoStatus}
                     </div>
-               )}
+               )} */}
                <Header />
                <Cards />
           </div>

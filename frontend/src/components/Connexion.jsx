@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import '../styles/connexion.css';
 
 const Connexion = () => {
+     const { t } = useTranslation();
      const { login } = useAuth();
      const [formData, setFormData] = useState({
           email: '',
@@ -34,13 +36,13 @@ const Connexion = () => {
           <div className="connexion-container">
                <div className='connexion-form'>
                     <form onSubmit={handleSubmit}>
-                         <h1>Connexion</h1>
+                         <h1>{t('connexion_title')}</h1>
                          {error && <div className="error-message">{error}</div>}
                          <input
                               type="email"
                               name="email"
                               className='text-input'
-                              placeholder="Email"
+                              placeholder={t('connexion_email_placeholder')}
                               value={formData.email}
                               onChange={handleChange}
                               required
@@ -49,7 +51,7 @@ const Connexion = () => {
                               type="password"
                               name="password"
                               className='text-input'
-                              placeholder="Mot de passe"
+                              placeholder={t('connexion_password_placeholder')}
                               value={formData.password}
                               onChange={handleChange}
                               required
@@ -64,11 +66,11 @@ const Connexion = () => {
                                    onChange={handleChange}
                               />
                               <label htmlFor="rester" className="rester-label">
-                                   Rester connecté
+                                   {t('connexion_rester_label')}
                               </label>
                          </div>
-                         <button type="submit">Se Connecter</button>
-                         <a className='inscrire' href="/inscription">S'inscrire ?</a>
+                         <button type="submit">{t('connexion_button')}</button>
+                         <a className='inscrire' href="/inscription">{t('connexion_signup_link')}</a>
                     </form>
                </div>
           </div>

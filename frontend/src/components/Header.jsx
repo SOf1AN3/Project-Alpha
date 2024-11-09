@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import menuIcon from '../assets/menu.png';
 import exitIcon from '../assets/exit.png';
 import '../App.css';
 
 const Header = () => {
+     const { t } = useTranslation();
      const [isMenuOpen, setMenuOpen] = useState(false);
      const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
      const [isFadingOut, setIsFadingOut] = useState(false);
@@ -50,11 +52,11 @@ const Header = () => {
                          <h5 className='logo-text'>Tiberium</h5>
                     </a>
                     <ul className="header-list">
-                         <li><a draggable="false" href="/home">Home</a></li>
-                         <li><a draggable="false" href="/services">Services</a></li>
-                         <li><a draggable="false" href="/expats">Expats</a></li>
-                         <li><a draggable="false" href="/contact">Contact</a></li>
-                         <li><a draggable="false" href="/about">About</a></li>
+                         <li><a draggable="false" href="/home">{t('header_home')}</a></li>
+                         <li><a draggable="false" href="/services">{t('header_services')}</a></li>
+                         <li><a draggable="false" href="/expats">{t('header_expats')}</a></li>
+                         <li><a draggable="false" href="/contact">{t('header_contact')}</a></li>
+                         <li><a draggable="false" href="/about">{t('header_about')}</a></li>
                          {/* {isLoggedIn && <li><a draggable="false" href="/dashboard/chat">Dashboard</a></li>} */}
                     </ul>
                     <button className="menu-button" onClick={toggleMenu}>
@@ -65,7 +67,7 @@ const Header = () => {
                          className='connexion-btn'
                          onClick={handleAuthClick}
                     >
-                         {isLoggedIn ? 'Se Déconnecter' : 'Se Connecter'}
+                         {isLoggedIn ? t('header_logout') : t('header_login')}
                     </button>
 
                     {isMenuOpen && (
@@ -77,9 +79,9 @@ const Header = () => {
                     {showLogoutConfirm && (
                          <div className="logout-confirm-overlay">
                               <div className={`logout-confirm-popup ${isFadingOut ? 'fade-out' : ''}`}>
-                                   <p>Voulez-vous vous déconnecter?</p>
-                                   <button className="confirm-btn" onClick={confirmLogout}>Oui</button>
-                                   <button className="cancel-btn" onClick={cancelLogout}>Non</button>
+                                   <p>{t('logout_confirm_message')}</p>
+                                   <button className="confirm-btn" onClick={confirmLogout}>{t('logout_confirm_yes')}</button>
+                                   <button className="cancel-btn" onClick={cancelLogout}>{t('logout_confirm_no')}</button>
                               </div>
                          </div>
                     )}

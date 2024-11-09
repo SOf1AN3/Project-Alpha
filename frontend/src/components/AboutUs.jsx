@@ -1,23 +1,25 @@
-import React from 'react'
-import '../styles/about.css'
+import React from 'react';
+import '../styles/about.css';
+import { useTranslation } from 'react-i18next';
 
 const AboutUs = () => {
+     const { t } = useTranslation();
      return (
           <div className="container-about">
                <h1 className='title'>About Us</h1>
-               <h1>Votre partenaire en consulting et développement</h1>
-               <p>“Depuis 2022, Tiberium Consulting accompagne les entreprises et les particuliers dans leur croissance en offrant des solutions de consulting, de formation et d’accompagnement digital. Notre équipe d’experts vous aide à relever les défis actuels du marché et à développer des stratégies gagnantes.”</p>
+               <h1>{t('about_title')}</h1>
+               <p>{t('about_desc')}</p>
 
-               <h1>Notre approche :</h1>
+               <h1>{t('about_approach_title')}</h1>
                <ul>
-                    <li>Sur mesure : chaque client est unique, et nous adaptons nos services à vos besoins spécifiques.</li>
-                    <li>Expertise sectorielle : nos consultants ont une solide expérience dans divers secteurs (industrie, technologie, services, etc.).</li>
-                    <li>Résultats orientés : nous travaillons avec vous pour atteindre des objectifs concrets et mesurables.</li>
+                    <li>{t('about_approach_list_1')}</li>
+                    <li>{t('about_approach_list_2')}</li>
+                    <li>{t('about_approach_list_3')}</li>
                </ul>
-               <h1>Notre Equipe :</h1>
-               <p>“Notre équipe est composée de consultants, d’experts en marché, et de formateurs ayant des années d’expérience. Passionnés par l’innovation et le développement, nous travaillons en étroite collaboration avec nos clients pour garantir des solutions efficaces et durables.”</p>
+               <h1>{t('about_team_title')}</h1>
+               <p>{t('about_team_desc')}</p>
           </div>
      );
 }
 
-export default AboutUs
+export default AboutUs;
