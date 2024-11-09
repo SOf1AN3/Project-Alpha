@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import i18n from '../i18n'; // Importez i18n
 import menuIcon from '../assets/menu.png';
 import exitIcon from '../assets/exit.png';
 import '../App.css';
@@ -45,6 +46,11 @@ const Header = () => {
           }, 300); // Duration of the fade-out animation
      };
 
+     const changeLanguage = () => {
+          const newLanguage = i18n.language === 'en' ? 'fr' : 'en';
+          i18n.changeLanguage(newLanguage);
+     };
+
      return (
           <div className='no-select'>
                <header className={isMenuOpen ? 'show-menu menu-open' : ''}>
@@ -59,16 +65,21 @@ const Header = () => {
                          <li><a draggable="false" href="/about">{t('header_about')}</a></li>
                          {/* {isLoggedIn && <li><a draggable="false" href="/dashboard/chat">Dashboard</a></li>} */}
                     </ul>
+
                     <button className="menu-button" onClick={toggleMenu}>
                          <img draggable="false" src={menuIcon} alt="Menu" />
                     </button>
 
-                    <button
-                         className='connexion-btn'
-                         onClick={handleAuthClick}
-                    >
-                         {isLoggedIn ? t('header_logout') : t('header_login')}
-                    </button>
+                    <div>
+                         <button className='change_language_btn' onClick={changeLanguage}>{t('language_btn')}</button>
+                         <button
+                              className='connexion-btn'
+                              onClick={handleAuthClick}
+                         >
+                              {isLoggedIn ? t('header_logout') : t('header_login')}
+                         </button>
+
+                    </div>
 
                     {isMenuOpen && (
                          <button className="exit-button" onClick={toggleMenu}>

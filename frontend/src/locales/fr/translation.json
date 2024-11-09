@@ -15,7 +15,7 @@
    "connexion_rester_label": "Rester connecté",
    "connexion_button": "Se Connecter",
    "connexion_signup_link": "S'inscrire ?",
-   "contact_form_title": "Contact Us",
+   "contact_form_title": "Nous Contacter",
    "contact_form_name_placeholder": "Nom Complet...",
    "contact_form_email_placeholder": "Email",
    "contact_form_message_placeholder": "Message...",
@@ -66,5 +66,6 @@
    "expats_answer_5": "Se réadapter à la vie en Algérie après des années à l'étranger peut demander du temps. Nous proposons :\n• Des sessions de coaching pour faciliter votre réintégration sociale et culturelle.\n• L'organisation d'événements de networking pour vous aider à reconstruire votre réseau personnel et professionnel.\n• Un service de conciergerie pour répondre à vos besoins quotidiens (déménagement, abonnement internet, ouverture de compte bancaire, etc.).",
    "expats_question_6": "Pourquoi Nous Choisir ?",
    "expats_answer_6": "• Expérience et Expertise : Une équipe d'experts connaissant parfaitement le contexte algérien et les besoins des expatriés.\n• Service Personnalisé : Chaque retour est unique, c'est pourquoi nos solutions sont entièrement personnalisées selon votre situation.\n• Assistance Complète : De la préparation avant votre départ à votre installation complète, nous sommes à vos côtés à chaque étape.",
-   "home_title": "Plus que juste une solution"
+   "home_title": "Plus que juste une solution",
+   "language_btn": "En"
 }
