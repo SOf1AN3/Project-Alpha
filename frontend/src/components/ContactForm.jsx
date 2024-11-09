@@ -13,13 +13,31 @@ const ContactForm = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.name || !formData.email || !formData.message) {
+            setError(t('contact_form_error_empty_fields'));
+            return;
+        }
+
+        if (!validateEmail(formData.email)) {
+            setError(t('contact_form_error_invalid_email'));
+            return;
+        }
+
+        setError('');
         setIsLoading(true);
 
         try {
@@ -42,11 +60,11 @@ const ContactForm = () => {
                 setIsSubmitted(true);
                 setTimeout(() => setIsSubmitted(false), 3000);
             } else {
-                alert(`Erreur lors de l'envoi du message: ${response.text}`);
+                setError(`Erreur lors de l'envoi du message: ${response.text}`);
                 setIsLoading(false);
             }
         } catch (error) {
-            alert('Erreur lors de l\'envoi du message: ' + error.message);
+            setError('Erreur lors de l\'envoi du message: ' + error.message);
             setIsLoading(false);
         }
     };
@@ -56,6 +74,7 @@ const ContactForm = () => {
             <div className='contact-form'>
                 <form onSubmit={handleSubmit} className=''>
                     <h1>{t('contact_form_title')}</h1>
+                    {error && <p className="error-message">{error}</p>}
                     <input
                         type="text"
                         name='name'

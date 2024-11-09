@@ -22,6 +22,8 @@
    "contact_form_button_loading": "Loading...",
    "contact_form_button_sent": "Envoyé!",
    "contact_form_button_send": "Envoyer",
+   "contact_form_error_empty_fields": "Veuillez remplir tous les champs.",
+   "contact_form_error_invalid_email": "Veuillez entrer une adresse email valide.",
    "header_home": "Acceuil",
    "header_services": "Services",
    "header_expats": "Expats",
