@@ -161,6 +161,7 @@
 @media (max-width: 1068px) {
      .services-container {
           grid-template-columns: repeat(2, 1fr);
+          height: auto;
      }
 
      .service-card:not(.expanded) {
