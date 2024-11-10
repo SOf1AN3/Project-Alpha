@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../styles/services.css';
 import exitIcon from '../assets/exit.png';
@@ -6,8 +6,6 @@ import image1 from '../assets/1.jpg';
 import image2 from '../assets/2.jpg';
 import image3 from '../assets/3.jpg';
 import image4 from '../assets/4.jpg';
-
-import Footer from './Footer';
 
 const LazyImage = lazy(() => import('./LazyImage'));
 

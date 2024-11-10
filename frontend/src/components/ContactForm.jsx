@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import emailjs from 'emailjs-com';
 import '../styles/contact.css';
 import { useTranslation } from 'react-i18next';
-import Footer from './Footer';
 
 const ContactForm = () => {
     const { t } = useTranslation();

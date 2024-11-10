@@ -1,8 +1,6 @@
-import React from 'react'
 import Header from '../components/Header'
 import Connexion from '../components/Connexion'
 import backgroundImage from '../assets/background.jpg'
-import Footer from '../components/Footer'
 
 const ConnexionPage = () => {
      return (
