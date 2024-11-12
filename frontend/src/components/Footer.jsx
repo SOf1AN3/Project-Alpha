@@ -3,7 +3,7 @@ const Footer = () => {
    return (
       <footer>
          <ul>
-            <li>Tiberium Consulting</li>
+            <li className='myks'>Developed By Myks Studios</li>
             {/* <li>
                <a href="">Facebook</a>
                <a href="">Instagram</a>
