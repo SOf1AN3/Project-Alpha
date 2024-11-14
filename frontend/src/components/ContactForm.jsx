@@ -48,7 +48,7 @@ const ContactForm = () => {
             };
 
             const response = await emailjs.send(
-                'service_wp60jaa',
+                'service_iqzkqli',
                 'template_hb116m5',
                 templateParams,
                 '80ZdQFGwY-B-CNLEr'
