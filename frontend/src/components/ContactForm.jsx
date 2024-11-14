@@ -49,9 +49,9 @@ const ContactForm = () => {
 
             const response = await emailjs.send(
                 'service_iqzkqli',
-                'template_hb116m5',
+                'template_v30jien',
                 templateParams,
-                '80ZdQFGwY-B-CNLEr'
+                'PhEjtk0uNwcdZjdHp'
             );
 
             if (response.status === 200) {
