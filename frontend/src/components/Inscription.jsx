@@ -16,12 +16,39 @@ const Inscription = () => {
 
      const handleSubmit = async (e) => {
           e.preventDefault();
+          setError('');
+
+          if (formData.password !== formData.confirmPassword) {
+               setError('Passwords do not match');
+               return;
+          }
 
           try {
-               const data = await signup(formData.name, formData.email, formData.password, formData.confirmPassword);
-               window.location.href = '/contact';
-          } catch (error) {
-               setError(error.error);
+               console.log('Sending signup request with data:', {
+                    ...formData,
+                    password: '[REDACTED]',
+                    confirmPassword: '[REDACTED]'
+               });
+
+               const data = await signup(
+                    formData.name,
+                    formData.email,
+                    formData.password,
+                    formData.confirmPassword
+               );
+
+               console.log('Signup successful:', data);
+
+               if (data) {
+                    alert(data.message || 'Signup successful!');
+                    window.location.href = '/contact';
+               }
+          } catch (err) {
+               console.error('Signup error details:', {
+                    message: err.message,
+                    stack: err.stack
+               });
+               setError(err.message || 'An error occurred during signup');
           }
      };
 
@@ -83,4 +110,4 @@ const Inscription = () => {
      );
 };
 
-export default Inscription;
+export default Inscription; 0

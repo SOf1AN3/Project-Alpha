@@ -1,97 +1,141 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+// contexts/AuthContext.js
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const AuthContext = createContext(null);
+const API_BASE_URL = 'http://localhost:5000';
+const AuthContext = createContext();
+
+export const useAuth = () => {
+     const context = useContext(AuthContext);
+     if (!context) {
+          throw new Error('useAuth must be used within an AuthProvider');
+     }
+     return context;
+};
 
 export const AuthProvider = ({ children }) => {
-     const [isLoggedIn, setIsLoggedIn] = useState(false);
      const [user, setUser] = useState(null);
+     const [loading, setLoading] = useState(true);
 
-     // Configure axios
-     axios.defaults.baseURL = 'http://localhost:5000'; // Ajustez selon votre PORT backend
-
-     // Vérifier l'état de l'authentification au chargement
+     // Check for token and user data on mount
      useEffect(() => {
+          const checkAuth = async () => {
+               const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+               if (token) {
+                    try {
+                         const response = await fetch(`${API_BASE_URL}/auth/check`, {
+                              headers: {
+                                   'Authorization': `Bearer ${token}`
+                              },
+                              credentials: 'include'
+                         });
+
+                         if (response.ok) {
+                              const data = await response.json();
+                              setUser(data.user);
+                         } else {
+                              // Token is invalid
+                              localStorage.removeItem('token');
+                              sessionStorage.removeItem('token');
+                         }
+                    } catch (error) {
+                         console.error('Auth check error:', error);
+                    }
+               }
+
+               setLoading(false);
+          };
+
           checkAuth();
      }, []);
 
-     const checkAuth = async () => {
-          const token = localStorage.getItem('token');
-          if (token) {
-               try {
-                    const response = await axios.get('/api/check-auth', {
-                         headers: {
-                              'Authorization': token
-                         }
-                    });
-                    if (response.data.authenticated) {
-                         setIsLoggedIn(true);
-                         setUser(response.data.user);
-                    }
-               } catch (error) {
-                    console.error('Erreur de vérification auth:', error);
-                    setIsLoggedIn(false);
-                    setUser(null);
+     const signup = async (name, email, password, confirmPassword) => {
+          try {
+               const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: {
+                         'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                         name,
+                         email,
+                         password,
+                         confirmPassword
+                    })
+               });
+
+               const data = await response.json();
+
+               if (!response.ok) {
+                    throw new Error(data.error || 'Signup failed');
                }
+
+               return data;
+          } catch (error) {
+               throw error;
           }
      };
 
      const login = async (email, password, rester) => {
           try {
-               const response = await axios.post('/api/login', {
-                    email,
-                    password,
-                    rester
+               const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                         'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                         email,
+                         password,
+                         rester
+                    })
                });
 
-               localStorage.setItem('token', response.data.token);
-               setIsLoggedIn(true);
-               setUser(response.data.user);
-               return response.data;
+               const data = await response.json();
+
+               if (!response.ok) {
+                    throw new Error(data.error || 'Login failed');
+               }
+
+               // Store the token in localStorage if "rester" is true, otherwise in sessionStorage
+               if (data.token) {
+                    if (rester) {
+                         localStorage.setItem('token', data.token);
+                    } else {
+                         sessionStorage.setItem('token', data.token);
+                    }
+                    setUser(data.user);
+               }
+
+               return data;
           } catch (error) {
-               throw error.response.data;
+               throw error;
           }
      };
 
      const logout = () => {
           localStorage.removeItem('token');
-          setIsLoggedIn(false);
+          sessionStorage.removeItem('token');
           setUser(null);
      };
 
-     const signup = async (name, email, password, confirmPassword, rester) => {
-          try {
-               const response = await axios.post('/api/signup', {
-                    name,
-                    email,
-                    password,
-                    confirmPassword,
-                    rester
-               });
+     if (loading) {
+          return null; // or a loading spinner
+     }
 
-               localStorage.setItem('token', response.data.token);
-               setIsLoggedIn(true);
-               setUser(response.data.user);
-               return response.data;
-          } catch (error) {
-               throw error.response.data;
-          }
+     const value = {
+          user,
+          signup,
+          login,
+          logout
      };
 
      return (
-          <AuthContext.Provider
-               value={{
-                    isLoggedIn,
-                    user,
-                    login,
-                    logout,
-                    signup,
-                    checkAuth
-               }}
-          >
+          <AuthContext.Provider value={value}>
                {children}
           </AuthContext.Provider>
      );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export default AuthProvider;

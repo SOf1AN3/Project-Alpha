@@ -15,12 +15,15 @@ const Connexion = () => {
 
      const handleSubmit = async (e) => {
           e.preventDefault();
+          setError('');
 
           try {
                const data = await login(formData.email, formData.password, formData.rester);
+               console.log('Login successful:', data);
                window.location.href = '/';
           } catch (error) {
-               setError(error.error);
+               console.error('Login error:', error);
+               setError(error.message || 'Login failed');
           }
      };
 

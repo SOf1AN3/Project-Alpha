@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 
+// Import components
 import Services from './pages/Services';
 import Home from './pages/Home';
 import ConnexionPage from './pages/ConnexionPage';
@@ -13,7 +14,10 @@ import InscriptionPage from './pages/InscriptionPage';
 import AdminPanel from './pages/AdminPanel';
 import NotFoundPage from './pages/NotFoundPage';
 import Messages from './pages/Messages';
+import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 
+// Import styles
 import './App.css';
 import './styles/about.css';
 import './styles/services.css';
@@ -27,17 +31,38 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/services" element={<Services />} />
             <Route path="/connexion" element={<ConnexionPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/inscription" element={<InscriptionPage />} />
             <Route path="/expats" element={<Expats />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/about" element={<AboutPage />} />
-            {/* <Route path="/dashboard/chat" element={<Messages />} /> */}
-            <Route path="/inscription" element={<InscriptionPage />} />
-            {/* <Route path="/admin/users" element={<AdminPanel />} /> */}
-            {/* always last */}
+            {/* Protected Routes */}
+
+
+            < Route
+              path="/dashboard/chat"
+              element={
+                <PrivateRoute>
+                  <Messages />
+                </PrivateRoute>
+              }
+            />
+
+            {/* Admin Routes */}
+            <Route
+              path="/admin/users"
+              element={
+                <AdminRoute>
+                  <AdminPanel />
+                </AdminRoute>
+              }
+            />
+
+            {/* 404 Route - Always Last */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
