@@ -1,4 +1,3 @@
-// contexts/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const API_BASE_URL = 'http://localhost:5000';
@@ -16,7 +15,6 @@ export const AuthProvider = ({ children }) => {
      const [user, setUser] = useState(null);
      const [loading, setLoading] = useState(true);
 
-     // Check for token and user data on mount
      useEffect(() => {
           const checkAuth = async () => {
                const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -34,7 +32,6 @@ export const AuthProvider = ({ children }) => {
                               const data = await response.json();
                               setUser(data.user);
                          } else {
-                              // Token is invalid
                               localStorage.removeItem('token');
                               sessionStorage.removeItem('token');
                          }
@@ -98,7 +95,6 @@ export const AuthProvider = ({ children }) => {
                     throw new Error(data.error || 'Login failed');
                }
 
-               // Store the token in localStorage if "rester" is true, otherwise in sessionStorage
                if (data.token) {
                     if (rester) {
                          localStorage.setItem('token', data.token);
@@ -121,7 +117,7 @@ export const AuthProvider = ({ children }) => {
      };
 
      if (loading) {
-          return null; // or a loading spinner
+          return null;
      }
 
      const value = {
