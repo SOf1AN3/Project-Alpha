@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
-import i18n from '../i18n'; // Importez i18n
+import i18n from '../i18n';
 import menuIcon from '../assets/menu.png';
 import exitIcon from '../assets/exit.png';
 import '../App.css';
@@ -12,7 +12,7 @@ const Header = () => {
      const [isMenuOpen, setMenuOpen] = useState(false);
      const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
      const [isFadingOut, setIsFadingOut] = useState(false);
-     const { isLoggedIn, logout } = useAuth();
+     const { user, logout } = useAuth();
      const navigate = useNavigate();
 
      const toggleMenu = () => {
@@ -20,7 +20,7 @@ const Header = () => {
      };
 
      const handleAuthClick = () => {
-          if (isLoggedIn) {
+          if (user) {
                setShowLogoutConfirm(true);
           } else {
                navigate('/connexion');
@@ -43,7 +43,7 @@ const Header = () => {
           setTimeout(() => {
                setShowLogoutConfirm(false);
                setIsFadingOut(false);
-          }, 300); // Duration of the fade-out animation
+          }, 300);
      };
 
      const changeLanguage = () => {
@@ -63,7 +63,6 @@ const Header = () => {
                          <li><a draggable="false" href="/expats">{t('header_expats')}</a></li>
                          <li><a draggable="false" href="/contact">{t('header_contact')}</a></li>
                          <li><a draggable="false" href="/about">{t('header_about')}</a></li>
-                         {/* {isLoggedIn && <li><a draggable="false" href="/dashboard/chat">Dashboard</a></li>} */}
                     </ul>
 
                     <button className="menu-button" onClick={toggleMenu}>
@@ -71,14 +70,15 @@ const Header = () => {
                     </button>
 
                     <div>
-                         <button className='change_language_btn' onClick={changeLanguage}>{t('language_btn')}</button>
+                         <button className='change_language_btn' onClick={changeLanguage}>
+                              {t('language_btn')}
+                         </button>
                          <button
                               className='connexion-btn'
                               onClick={handleAuthClick}
                          >
-                              {isLoggedIn ? t('header_logout') : t('header_login')}
+                              {user ? t('header_logout') : t('header_login')}
                          </button>
-
                     </div>
 
                     {isMenuOpen && (
@@ -91,8 +91,12 @@ const Header = () => {
                          <div className="logout-confirm-overlay">
                               <div className={`logout-confirm-popup ${isFadingOut ? 'fade-out' : ''}`}>
                                    <p>{t('logout_confirm_message')}</p>
-                                   <button className="confirm-btn" onClick={confirmLogout}>{t('logout_confirm_yes')}</button>
-                                   <button className="cancel-btn" onClick={cancelLogout}>{t('logout_confirm_no')}</button>
+                                   <button className="confirm-btn" onClick={confirmLogout}>
+                                        {t('logout_confirm_yes')}
+                                   </button>
+                                   <button className="cancel-btn" onClick={cancelLogout}>
+                                        {t('logout_confirm_no')}
+                                   </button>
                               </div>
                          </div>
                     )}
