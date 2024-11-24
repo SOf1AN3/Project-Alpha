@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/messages.css';
@@ -10,12 +10,20 @@ const Messages = () => {
    const [newMessage, setNewMessage] = useState('');
    const [users, setUsers] = useState([]);
    const [selectedUser, setSelectedUser] = useState(null);
+   const messagesEndRef = useRef(null);
+
+   const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+   };
+
+   useEffect(() => {
+      scrollToBottom();
+   }, [messages]);
 
    useEffect(() => {
       const newSocket = io('http://localhost:5000');
-
-      // Authentifier le socket avec le token
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
       newSocket.emit('authenticate', token);
 
       newSocket.on('error', (error) => {
@@ -28,50 +36,103 @@ const Messages = () => {
 
       setSocket(newSocket);
 
-      return () => {
-         newSocket.close();
-      };
+      return () => newSocket.close();
    }, []);
 
    useEffect(() => {
-      // Charger la liste des utilisateurs disponibles pour la messagerie
-      const loadUsers = async () => {
+      loadUsers();
+   }, [user]);
+
+   useEffect(() => {
+      if (selectedUser) {
+         loadMessages();
+      }
+   }, [selectedUser]);
+
+   const loadUsers = async () => {
+      try {
+         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+         const response = await fetch('http://localhost:5000/auth/users', {
+            headers: {
+               'Authorization': `Bearer ${token}`
+            }
+         });
+
+         if (response.ok) {
+            const data = await response.json();
+            const filteredUsers = user.type === 'admin'
+               ? data.users
+               : data.users.filter(u => u.type === 'admin');
+            setUsers(filteredUsers);
+         }
+      } catch (error) {
+         console.error('Error loading users:', error);
+      }
+   };
+
+   const loadMessages = async () => {
+      try {
+         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+         const response = await fetch(`http://localhost:5000/messages/${selectedUser._id}`, {
+            headers: {
+               'Authorization': `Bearer ${token}`
+            }
+         });
+
+         if (response.ok) {
+            const data = await response.json();
+            setMessages(data.messages);
+         }
+      } catch (error) {
+         console.error('Error loading messages:', error);
+      }
+   };
+
+   const handleSendMessage = async (e) => {
+      e.preventDefault();
+      if (newMessage.trim() && selectedUser && socket) {
          try {
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/auth/users', {
+            const messageData = {
+               receiverId: selectedUser._id,
+               content: newMessage,
+               senderId: user._id
+            };
+
+            // Envoyer le message au backend
+            const response = await fetch('http://localhost:5000/messages', {
+               method: 'POST',
                headers: {
+                  'Content-Type': 'application/json',
                   'Authorization': `Bearer ${token}`
-               }
+               },
+               body: JSON.stringify(messageData)
             });
 
             if (response.ok) {
-               const data = await response.json();
-               // Si l'utilisateur est admin, montrer tous les utilisateurs
-               // Sinon, montrer uniquement les admins
-               const filteredUsers = user.type === 'admin'
-                  ? data.users
-                  : data.users.filter(u => u.type === 'admin');
-               setUsers(filteredUsers);
+               // Émettre le message via socket
+               socket.emit('sendMessage', messageData);
+
+               // Ajouter le message à l'état local
+               const newMessageObj = {
+                  ...messageData,
+                  isSentByMe: true,
+                  timestamp: new Date()
+               };
+               setMessages(prevMessages => [...prevMessages, newMessageObj]);
+
+               // Réinitialiser le champ de message
+               setNewMessage('');
             }
          } catch (error) {
-            console.error('Error loading users:', error);
+            console.error('Error sending message:', error);
          }
-      };
-
-      if (user) {
-         loadUsers();
       }
-   }, [user]);
+   };
 
-   const handleSendMessage = (e) => {
-      e.preventDefault();
-      if (newMessage.trim() && selectedUser && socket) {
-         socket.emit('sendMessage', {
-            receiverId: selectedUser._id,
-            content: newMessage
-         });
-         setNewMessage('');
-      }
+   const formatMessageDate = (timestamp) => {
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
    };
 
    return (
@@ -92,20 +153,22 @@ const Messages = () => {
          <div className="chat-section">
             {selectedUser ? (
                <>
+                  <div className="chat-header">
+                     <h3>Chat with {selectedUser.name}</h3>
+                  </div>
                   <div className="messages-display">
-                     {messages
-                        .filter(m =>
-                           (m.senderId === user._id && m.receiverId === selectedUser._id) ||
-                           (m.senderId === selectedUser._id && m.receiverId === user._id)
-                        )
-                        .map((message, index) => (
-                           <div
-                              key={index}
-                              className={`message ${message.isSentByMe ? 'sent' : 'received'}`}
-                           >
-                              {message.content}
+                     {messages.map((message, index) => (
+                        <div
+                           key={index}
+                           className={`message ${message.senderId === user._id ? 'sent' : 'received'}`}
+                        >
+                           <div className="message-content">{message.content}</div>
+                           <div className="message-timestamp">
+                              {formatMessageDate(message.timestamp)}
                            </div>
-                        ))}
+                        </div>
+                     ))}
+                     <div ref={messagesEndRef} />
                   </div>
                   <form onSubmit={handleSendMessage} className="message-form">
                      <input

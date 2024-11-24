@@ -1,55 +1,41 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const messageSchema = new Schema({
+const messageSchema = new mongoose.Schema({
      senderId: {
-          type: Schema.Types.ObjectId,
-          ref: 'user',
-          required: true,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required: true
      },
      receiverId: {
-          type: Schema.Types.ObjectId,
-          ref: 'user',
-          required: true,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required: true
      },
      content: {
           type: String,
-          required: true,
+          required: true
      },
      timestamp: {
           type: Date,
-          default: Date.now,
-     },
-     isRead: {
-          type: Boolean,
-          default: false
+          default: Date.now
+     }
+}, {
+     timestamps: true
+});
+
+// Supprimer tous les index existants
+messageSchema.indexes().forEach(index => {
+     messageSchema.index(index.fields, { unique: false });
+});
+
+const Message = mongoose.model('Message', messageSchema);
+
+// Supprimer l'index email s'il existe
+Message.collection.dropIndex('email_1').catch(err => {
+     // Ignorer l'erreur si l'index n'existe pas
+     if (err.code !== 27) {
+          console.error('Erreur lors de la suppression de l\'index:', err);
      }
 });
 
-// Middleware pour vérifier que la communication respecte les règles admin/user
-messageSchema.pre('save', async function (next) {
-     try {
-          const sender = await mongoose.model('user').findById(this.senderId);
-          const receiver = await mongoose.model('user').findById(this.receiverId);
-
-          if (!sender || !receiver) {
-               throw new Error('Sender or receiver not found');
-          }
-
-          // Si l'expéditeur est un admin, il peut envoyer à n'importe qui
-          if (sender.type === 'admin') {
-               return next();
-          }
-
-          // Si l'expéditeur n'est pas admin, le destinataire doit être admin
-          if (receiver.type !== 'admin') {
-               throw new Error('Non-admin users can only send messages to admins');
-          }
-
-          next();
-     } catch (error) {
-          next(error);
-     }
-});
-
-module.exports = mongoose.model('Message', messageSchema);
+module.exports = Message;

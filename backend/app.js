@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
 const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -30,10 +31,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const authRoutes = require('./routes/auth');
+const messageRoutes = require('./routes/messages');
 const Message = require('./models/message');
 const User = require('./models/user');
 
 app.use('/auth', authRoutes);
+app.use('/messages', messageRoutes);
 
 // Connexion MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -78,7 +81,8 @@ io.on('connection', (socket) => {
                const message = new Message({
                     senderId: socket.userId,
                     receiverId,
-                    content
+                    content,
+                    timestamp: new Date() // Ajouter le timestamp
                });
 
                await message.save();
@@ -94,6 +98,7 @@ io.on('connection', (socket) => {
                     isSentByMe: true
                });
           } catch (error) {
+               console.error('Error in sendMessage:', error);
                socket.emit('error', error.message);
           }
      });
