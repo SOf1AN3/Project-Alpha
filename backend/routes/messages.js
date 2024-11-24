@@ -33,4 +33,17 @@ router.post('/', auth, async (req, res) => {
    }
 });
 
+router.get('/history/:userId', auth, async (req, res) => {
+   try {
+      const userId = req.params.userId;
+      const messages = await Message.find({
+         $or: [{ senderId: req.user.id, receiverId: userId }, { senderId: userId, receiverId: req.user.id }]
+      }).sort({ timestamp: 1 }); // Trier par timestamp croissant
+
+      res.json(messages);
+   } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+   }
+});
+
 module.exports = router;

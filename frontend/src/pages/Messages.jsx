@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/messages.css';
@@ -112,6 +112,7 @@ const Messages = () => {
             if (response.ok) {
                // Émettre le message via socket
                socket.emit('sendMessage', messageData);
+
 
                // Ajouter le message à l'état local
                const newMessageObj = {
