@@ -21,7 +21,8 @@ const Messages = () => {
    }, [messages]);
 
    useEffect(() => {
-      const newSocket = io('http://localhost:5000');
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const newSocket = io(apiUrl);
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
       newSocket.emit('authenticate', token);
@@ -92,39 +93,17 @@ const Messages = () => {
       e.preventDefault();
       if (newMessage.trim() && selectedUser && socket) {
          try {
-            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
             const messageData = {
                receiverId: selectedUser._id,
                content: newMessage,
                senderId: user._id
             };
 
-            // Envoyer le message au backend
-            const response = await fetch('http://localhost:5000/messages', {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
-               },
-               body: JSON.stringify(messageData)
-            });
+            // Uniquement émettre via socket
+            socket.emit('sendMessage', messageData);
 
-            if (response.ok) {
-               // Émettre le message via socket
-               socket.emit('sendMessage', messageData);
-
-
-               // Ajouter le message à l'état local
-               const newMessageObj = {
-                  ...messageData,
-                  isSentByMe: true,
-                  timestamp: new Date()
-               };
-               setMessages(prevMessages => [...prevMessages, newMessageObj]);
-
-               // Réinitialiser le champ de message
-               setNewMessage('');
-            }
+            // Réinitialiser le champ de message
+            setNewMessage('');
          } catch (error) {
             console.error('Error sending message:', error);
          }
