@@ -6,6 +6,7 @@
      color: white;
      text-align: center;
      z-index: 1000;
+     margin-top: 200px;
 }
 
 .not-found-message h1 {
