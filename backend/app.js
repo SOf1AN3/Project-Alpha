@@ -30,6 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const authRoutes = require('./routes/auth');
+const Message = require('./models/message');
+const User = require('./models/user');
+
 app.use('/auth', authRoutes);
 
 // Connexion MongoDB
@@ -48,8 +51,51 @@ mongoose.connect(process.env.MONGO_URI)
 io.on('connection', (socket) => {
      console.log('New client connected');
 
-     socket.on('sendMessage', (message) => {
-          io.emit('receiveMessage', message);
+     // Authentification du socket
+     socket.on('authenticate', async (token) => {
+          try {
+               // Vérifier le token et obtenir l'utilisateur
+               const decoded = jwt.verify(token, process.env.JWT_SECRET);
+               const user = await User.findById(decoded.userId);
+               if (!user) throw new Error('User not found');
+
+               socket.userId = user._id;
+               socket.userType = user.type;
+               socket.join(user._id.toString()); // Rejoindre une room personnelle
+          } catch (error) {
+               socket.emit('error', 'Authentication failed');
+          }
+     });
+
+     socket.on('sendMessage', async (data) => {
+          try {
+               if (!socket.userId) {
+                    throw new Error('Not authenticated');
+               }
+
+               const { receiverId, content } = data;
+
+               const message = new Message({
+                    senderId: socket.userId,
+                    receiverId,
+                    content
+               });
+
+               await message.save();
+
+               // Émettre le message au destinataire et à l'expéditeur
+               io.to(receiverId).emit('receiveMessage', {
+                    ...message.toObject(),
+                    isSentByMe: false
+               });
+
+               socket.emit('receiveMessage', {
+                    ...message.toObject(),
+                    isSentByMe: true
+               });
+          } catch (error) {
+               socket.emit('error', error.message);
+          }
      });
 
      socket.on('disconnect', () => {

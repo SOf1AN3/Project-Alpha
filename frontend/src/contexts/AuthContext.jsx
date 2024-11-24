@@ -32,11 +32,16 @@ export const AuthProvider = ({ children }) => {
                               const data = await response.json();
                               setUser(data.user);
                          } else {
+                              // Si le token n'est plus valide, le supprimer
                               localStorage.removeItem('token');
                               sessionStorage.removeItem('token');
+                              setUser(null);
                          }
                     } catch (error) {
                          console.error('Auth check error:', error);
+                         localStorage.removeItem('token');
+                         sessionStorage.removeItem('token');
+                         setUser(null);
                     }
                }
 
@@ -68,6 +73,8 @@ export const AuthProvider = ({ children }) => {
                     throw new Error(data.error || 'Signup failed');
                }
 
+               // On ne set pas automatiquement l'utilisateur après l'inscription
+               // L'utilisateur devra se connecter après avoir confirmé son email
                return data;
           } catch (error) {
                throw error;
@@ -95,6 +102,7 @@ export const AuthProvider = ({ children }) => {
                     throw new Error(data.error || 'Login failed');
                }
 
+               // Stocker le token dans le bon storage selon le choix de l'utilisateur
                if (data.token) {
                     if (rester) {
                          localStorage.setItem('token', data.token);
@@ -116,6 +124,24 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
      };
 
+     // Fonction utilitaire pour vérifier si l'utilisateur est admin
+     const isAdmin = () => {
+          return user?.type === 'admin';
+     };
+
+     // Fonction utilitaire pour obtenir le token courant
+     const getToken = () => {
+          return localStorage.getItem('token') || sessionStorage.getItem('token');
+     };
+
+     // Fonction pour mettre à jour les informations utilisateur
+     const updateUserInfo = (newUserInfo) => {
+          setUser(prev => ({
+               ...prev,
+               ...newUserInfo
+          }));
+     };
+
      if (loading) {
           return null;
      }
@@ -124,7 +150,12 @@ export const AuthProvider = ({ children }) => {
           user,
           signup,
           login,
-          logout
+          logout,
+          isAdmin,
+          getToken,
+          updateUserInfo,
+          isAuthenticated: !!user,
+          loading
      };
 
      return (
