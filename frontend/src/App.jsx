@@ -44,7 +44,7 @@ function App() {
 
 
             < Route
-              path="/dashboard/chat"
+              path="/chat"
               element={
                 <PrivateRoute>
                   <Messages />
