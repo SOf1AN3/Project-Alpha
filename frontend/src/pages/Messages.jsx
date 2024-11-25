@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import '../styles/messages.css';
 
 const Messages = () => {
    const { user } = useAuth();
+   const navigate = useNavigate();
    const [socket, setSocket] = useState(null);
    const [messages, setMessages] = useState([]);
    const [newMessage, setNewMessage] = useState('');
@@ -137,7 +139,15 @@ const Messages = () => {
    return (
       <div className="messages-container">
          <div className="users-list">
-            <h3>Available Users</h3>
+            <div className="users-header">
+               <h3>Users</h3>
+               <button
+                  className="home-button"
+                  onClick={() => navigate('/')}
+               >
+                  Home
+               </button>
+            </div>
             {users.map((u) => (
                <div
                   key={u._id}
@@ -169,7 +179,7 @@ const Messages = () => {
                                  className={
                                     senderId === user._id ? 'message sent' :
                                        senderId === selectedUser._id ? 'message received' :
-                                          'message red'
+                                          'message received'
                                  }
                               >
                                  <div className="message-content">{message.content}</div>
