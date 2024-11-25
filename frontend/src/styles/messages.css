@@ -4,6 +4,8 @@
    background-color: #f5f7fb;
    gap: 20px;
    padding: 20px;
+   flex-direction: row;
+   height: 100vh;
 }
 
 .users-list {
@@ -13,6 +15,8 @@
    padding: 15px;
    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
    overflow-y: auto;
+   width: 25%;
+   border-right: 1px solid #ddd;
 }
 
 .users-list h3 {
@@ -51,6 +55,8 @@
    border-radius: 10px;
    padding: 20px;
    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   width: 75%;
+   justify-content: space-between;
 }
 
 .messages-display {
@@ -60,12 +66,13 @@
    padding: 10px;
    display: flex;
    flex-direction: column;
+   flex-grow: 1;
 }
 
 .message {
    padding: 12px 18px;
    border-radius: 15px;
-   margin-bottom: 12px;
+   margin-bottom: 5px;
    max-width: 70%;
    word-wrap: break-word;
    position: relative;
@@ -81,7 +88,7 @@
 }
 
 .message.received {
-   background-color: #f0f2f5;
+   background-color: #d2d2d2;
    color: #2c3e50;
    align-self: flex-start;
    border-bottom-left-radius: 5px;
@@ -93,6 +100,8 @@
    padding: 15px;
    background-color: #f8f9fa;
    border-radius: 10px;
+   padding: 10px;
+   border-top: 1px solid #ddd;
 }
 
 .message-input {
@@ -102,6 +111,11 @@
    border-radius: 25px;
    font-size: 15px;
    transition: border-color 0.3s ease;
+   flex-grow: 1;
+   padding: 10px;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   margin-right: 10px;
 }
 
 .message-input:focus {
@@ -118,6 +132,8 @@
    cursor: pointer;
    transition: all 0.3s ease;
    font-weight: 600;
+   padding: 10px 20px;
+   border-radius: 5px;
 }
 
 .send-button:hover {
@@ -137,4 +153,37 @@
    color: #6c757d;
    font-size: 1.1em;
    font-weight: 500;
+}
+
+.chat-header {
+   color: black;
+}
+
+/* Add media queries for responsiveness */
+@media (max-width: 768px) {
+   .messages-container {
+      flex-direction: column;
+   }
+
+   .users-list {
+      width: 100%;
+      height: 200px;
+      border-right: none;
+      border-bottom: 1px solid #ddd;
+   }
+
+   .chat-section {
+      width: 100%;
+      height: calc(100vh - 200px);
+   }
+}
+
+@media (max-width: 480px) {
+   .message-input {
+      padding: 5px;
+   }
+
+   .send-button {
+      padding: 5px 10px;
+   }
 }

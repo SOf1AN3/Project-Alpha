@@ -32,6 +32,7 @@ const Messages = () => {
       });
 
       newSocket.on('receiveMessage', (message) => {
+         console.log('Nouveau message reçu:', message);
          setMessages((prevMessages) => [...prevMessages, message]);
       });
 
@@ -46,6 +47,7 @@ const Messages = () => {
 
    useEffect(() => {
       if (selectedUser) {
+         console.log('Utilisateur sélectionné:', selectedUser);
          loadMessages();
       }
    }, [selectedUser]);
@@ -72,17 +74,29 @@ const Messages = () => {
    };
 
    const loadMessages = async () => {
+      if (!selectedUser?._id) {
+         console.log('Pas d\'utilisateur sélectionné');
+         return;
+      }
+
       try {
          const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-         const response = await fetch(`http://localhost:5000/messages/${selectedUser._id}`, {
+         console.log('Chargement des messages pour:', selectedUser._id);
+         console.log('Token utilisé:', token);
+
+         const response = await fetch(`http://localhost:5000/messages/history/${selectedUser._id}`, {
             headers: {
                'Authorization': `Bearer ${token}`
             }
          });
 
+         const data = await response.json();
+         console.log('Réponse du serveur:', data);
+
          if (response.ok) {
-            const data = await response.json();
-            setMessages(data.messages);
+            setMessages(data);
+         } else {
+            console.error('Erreur serveur:', data.error);
          }
       } catch (error) {
          console.error('Error loading messages:', error);
@@ -137,17 +151,25 @@ const Messages = () => {
                      <h3>Chat with {selectedUser.name}</h3>
                   </div>
                   <div className="messages-display">
-                     {messages.map((message, index) => (
-                        <div
-                           key={index}
-                           className={`message ${message.senderId === user._id ? 'sent' : 'received'}`}
-                        >
-                           <div className="message-content">{message.content}</div>
-                           <div className="message-timestamp">
-                              {formatMessageDate(message.timestamp)}
-                           </div>
-                        </div>
-                     ))}
+                     {console.log('État actuel des messages:', messages)}
+                     {messages.length === 0 ? (
+                        <div className="no-messages">Pas encore de messages</div>
+                     ) : (
+                        messages.map((message, index) => {
+                           console.log('Message en cours:', message);  // Voir chaque message
+                           return (
+                              <div
+                                 key={index}
+                                 className={`message ${message.senderId._id === user._id ? 'sent' : 'received'}`}
+                              >
+                                 <div className="message-content">{message.content}</div>
+                                 <div className="message-timestamp">
+                                    {formatMessageDate(message.timestamp)}
+                                 </div>
+                              </div>
+                           );
+                        })
+                     )}
                      <div ref={messagesEndRef} />
                   </div>
                   <form onSubmit={handleSendMessage} className="message-form">

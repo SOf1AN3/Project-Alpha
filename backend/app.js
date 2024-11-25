@@ -32,6 +32,8 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 const authRoutes = require('./routes/auth');
 const messageRoutes = require('./routes/messages');
+
+// Modèles
 const Message = require('./models/message');
 const User = require('./models/user');
 
@@ -49,6 +51,7 @@ mongoose.connect(process.env.MONGO_URI)
      .catch((error) => {
           console.log("MongoDB connection error:", error);
      });
+mongoose.set('debug', true);
 
 // Gestion des événements Socket.io
 io.on('connection', (socket) => {
