@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import '../styles/messages.css';
 
 const Messages = () => {
    const { user } = useAuth();
+   const navigate = useNavigate();
    const [socket, setSocket] = useState(null);
    const [messages, setMessages] = useState([]);
    const [newMessage, setNewMessage] = useState('');
@@ -113,10 +115,7 @@ const Messages = () => {
                senderId: user._id
             };
 
-            // Uniquement émettre via socket
             socket.emit('sendMessage', messageData);
-
-            // Réinitialiser le champ de message
             setNewMessage('');
          } catch (error) {
             console.error('Error sending message:', error);
@@ -129,10 +128,26 @@ const Messages = () => {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
    };
 
+   const getMessageSenderId = (message) => {
+      return typeof message.senderId === 'object' ? message.senderId._id : message.senderId;
+   };
+
+   const getMessageReceiverId = (message) => {
+      return typeof message.receiverId === 'object' ? message.receiverId._id : message.receiverId;
+   };
+
    return (
       <div className="messages-container">
          <div className="users-list">
-            <h3>Available Users</h3>
+            <div className="users-header">
+               <h3>Users</h3>
+               <button
+                  className="home-button"
+                  onClick={() => navigate('/')}
+               >
+                  Home
+               </button>
+            </div>
             {users.map((u) => (
                <div
                   key={u._id}
@@ -151,16 +166,21 @@ const Messages = () => {
                      <h3>Chat with {selectedUser.name}</h3>
                   </div>
                   <div className="messages-display">
-                     {console.log('État actuel des messages:', messages)}
                      {messages.length === 0 ? (
                         <div className="no-messages">Pas encore de messages</div>
                      ) : (
                         messages.map((message, index) => {
-                           console.log('Message en cours:', message);  // Voir chaque message
+                           const senderId = getMessageSenderId(message);
+                           const receiverId = getMessageReceiverId(message);
+
                            return (
                               <div
                                  key={index}
-                                 className={`message ${message.senderId._id === user._id ? 'sent' : 'received'}`}
+                                 className={
+                                    senderId === user._id ? 'message sent' :
+                                       senderId === selectedUser._id ? 'message received' :
+                                          'message received'
+                                 }
                               >
                                  <div className="message-content">{message.content}</div>
                                  <div className="message-timestamp">
