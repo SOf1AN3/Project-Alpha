@@ -131,5 +131,86 @@ router.get('/messages/:userId', authMiddleware, async (req, res) => {
    }
 });
 
+router.patch('/users/:userId/type', authMiddleware, async (req, res) => {
+   try {
+      // Vérifier que seul un admin peut effectuer cette action
+      if (req.user.type !== 'admin') {
+         return res.status(403).json({ error: 'Unauthorized' });
+      }
+
+      const { userId } = req.params;
+      const { type } = req.body;
+
+      // Valider le type - mettre à jour avec les nouveaux types
+      if (!['simple', 'advanced', 'premium', 'admin'].includes(type)) {
+         return res.status(400).json({ error: 'Invalid user type' });
+      }
+
+      // Interdire de modifier son propre compte
+      if (userId === req.user._id.toString()) {
+         return res.status(403).json({ error: 'Cannot modify your own account' });
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+         userId,
+         { type },
+         { new: true }
+      );
+
+      if (!updatedUser) {
+         return res.status(404).json({ error: 'User not found' });
+      }
+
+      res.json({ user: updatedUser });
+   } catch (error) {
+      console.error('Error changing user type:', error);
+      res.status(500).json({ error: 'Server error' });
+   }
+});
+
+router.delete('/users/:userId', authMiddleware, async (req, res) => {
+   try {
+      // Vérifier que seul un admin peut effectuer cette action
+      if (req.user.type !== 'admin') {
+         return res.status(403).json({ error: 'Unauthorized' });
+      }
+
+      const { userId } = req.params;
+
+      // Interdire de supprimer son propre compte
+      if (userId === req.user._id.toString()) {
+         return res.status(403).json({ error: 'Cannot delete your own account' });
+      }
+
+      // Supprimer d'abord les messages
+      await Message.deleteMany({
+         $or: [
+            { senderId: userId },
+            { receiverId: userId }
+         ]
+      });
+
+      // Puis supprimer l'utilisateur
+      const deletedUser = await User.findByIdAndDelete(userId);
+
+      if (!deletedUser) {
+         return res.status(404).json({ error: 'User not found' });
+      }
+
+      res.json({
+         message: 'User and associated messages deleted successfully',
+         deletedMessages: await Message.countDocuments({
+            $or: [
+               { senderId: userId },
+               { receiverId: userId }
+            ]
+         })
+      });
+   } catch (error) {
+      console.error('Error deleting user:', error);
+      res.status(500).json({ error: 'Server error' });
+   }
+});
+
 
 module.exports = router;

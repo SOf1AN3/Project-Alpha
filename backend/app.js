@@ -11,7 +11,7 @@ const server = http.createServer(app);
 const io = socketIo(server, {
      cors: {
           origin: 'http://localhost:5173',
-          methods: ['GET', 'POST'],
+          methods: ['GET', 'POST', 'PATCH', 'DELETE'],
           allowedHeaders: ['Content-Type', 'Authorization'],
           credentials: true,
      }
@@ -20,7 +20,7 @@ const io = socketIo(server, {
 // Configuration de CORS
 app.use(cors({
      origin: 'http://localhost:5173',
-     methods: ['GET', 'POST'],
+     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
      allowedHeaders: ['Content-Type', 'Authorization'],
      credentials: true,
 }));
@@ -51,7 +51,6 @@ mongoose.connect(process.env.MONGO_URI)
      .catch((error) => {
           console.log("MongoDB connection error:", error);
      });
-mongoose.set('debug', true);
 
 // Gestion des événements Socket.io
 io.on('connection', (socket) => {
