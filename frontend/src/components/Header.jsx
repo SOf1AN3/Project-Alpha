@@ -63,6 +63,7 @@ const Header = () => {
                          <li><a draggable="false" href="/expats">{t('header_expats')}</a></li>
                          <li><a draggable="false" href="/contact">{t('header_contact')}</a></li>
                          <li><a draggable="false" href="/about">{t('header_about')}</a></li>
+                         <li><a draggable="false" href="/chat">{t('header_chat')}</a></li>
                     </ul>
 
                     <button className="menu-button" onClick={toggleMenu}>
