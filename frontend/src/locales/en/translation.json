@@ -72,6 +72,7 @@
    "home_title": "More than just a solution",
    "header_chat": "Chat",
    "language_btn": "Fr",
+   "change_language_title": "Change Language",
    "profile_settings_title": "Profile Settings",
    "profile_settings_change_email": "Change Email",
    "profile_settings_new_email": "New Email",
@@ -85,5 +86,8 @@
    "profile_settings_all_fields_required": "All fields are required",
    "profile_settings_passwords_not_match": "Passwords do not match",
    "profile_settings_email_updated": "Email updated successfully",
-   "profile_settings_password_updated": "Password updated successfully"
+   "profile_settings_password_updated": "Password updated successfully",
+   "settings_button": "Settings",
+   "language_settings": "Language",
+   "profile_settings_login_required": "You must be logged in to access this page."
 }

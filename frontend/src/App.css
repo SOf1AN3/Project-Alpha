@@ -70,13 +70,19 @@ ul a:hover {
 }
 
 /* Button styling */
-button {
+.btn {
   padding: 10px 20px;
   background-color: white;
   font-weight: 500;
   border: none;
   border-radius: 20px;
+  transition: all ease 0.5s;
   cursor: pointer;
+}
+
+.btn:hover {
+  background-color: rgb(194, 194, 194);
+  transition: all ease 0.5s;
 }
 
 .connexion-btn {
@@ -189,6 +195,30 @@ h5 {
   font-weight: 200;
 }
 
+.settings-gear {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+  filter: brightness(0) invert(1);
+  transition: all ease 0.7s;
+}
+
+.settings-gear:hover {
+  filter: brightness(0) invert(0.8);
+  rotate: 90deg;
+  transition: all ease 0.7s;
+}
+
+.header_right_section {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.header_right_section a {
+  bottom: 0;
+}
+
 /* Media query for mobile screens */
 @media (max-width: 1000px) {
   .header.menu-open {
@@ -250,10 +280,13 @@ h5 {
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 600px) {
   .logo-text {
     display: none;
   }
+}
+
+@media (max-width: 450px) {
 
   header {
     display: flex;

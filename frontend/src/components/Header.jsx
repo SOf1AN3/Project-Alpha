@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import menuIcon from '../assets/menu.png';
 import exitIcon from '../assets/exit.png';
+import settings from '../assets/settings.png';
 import '../App.css';
 
 const Header = () => {
@@ -70,12 +71,10 @@ const Header = () => {
                          <img draggable="false" src={menuIcon} alt="Menu" />
                     </button>
 
-                    <div>
-                         <button className='change_language_btn' onClick={changeLanguage}>
-                              {t('language_btn')}
-                         </button>
+                    <div className='header-right-section'>
+                         <a href="/settings" ><img src={settings} alt="" className='settings-gear' /></a>
                          <button
-                              className='connexion-btn'
+                              className='connexion-btn btn'
                               onClick={handleAuthClick}
                          >
                               {user ? t('header_logout') : t('header_login')}

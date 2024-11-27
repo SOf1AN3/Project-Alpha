@@ -41,6 +41,7 @@ function App() {
             <Route path="/inscription" element={<InscriptionPage />} />
             <Route path="/expats" element={<Expats />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/settings" element={<ProfileSettings />} />
             {/* Protected Routes */}
 
 
@@ -53,14 +54,7 @@ function App() {
               }
             />
 
-            <Route
-              path="/settings"
-              element={
-                <PrivateRoute>
-                  <ProfileSettings />
-                </PrivateRoute>
-              }
-            />
+
 
             {/* Admin Routes */}
             <Route path="/admin/users" element={<AdminRoute> <Users /> </AdminRoute>} />
