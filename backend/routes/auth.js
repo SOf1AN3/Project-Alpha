@@ -2,18 +2,25 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Message = require('../models/message');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/signup', async (req, res) => {
-   const { name, email, password, role } = req.body;
+   const { name, email, password } = req.body;
    try {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = new User({ name, email, password: hashedPassword, role: role || 'user' });
+      const user = new User({
+         name,
+         email,
+         password: hashedPassword,
+         type: 'simple' // Valeur par défaut explicite
+      });
       await user.save();
       res.status(201).json({ message: 'User created successfully' });
    } catch (error) {
-      res.status(400).json({ error: 'Error creating user' });
+      console.error('Signup error:', error); // Ajoutez un log d'erreur
+      res.status(400).json({ error: error.message || 'Error creating user' });
    }
 });
 
@@ -208,6 +215,61 @@ router.delete('/users/:userId', authMiddleware, async (req, res) => {
       });
    } catch (error) {
       console.error('Error deleting user:', error);
+      res.status(500).json({ error: 'Server error' });
+   }
+});
+
+// Dans routes/auth.js, ajouter ces nouvelles routes
+
+// Route pour changer l'email
+router.patch('/change-email', authMiddleware, async (req, res) => {
+   try {
+      const { newEmail, password } = req.body;
+      const user = await User.findById(req.user._id);
+
+      // Vérifier le mot de passe
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+         return res.status(400).json({ error: 'Invalid password' });
+      }
+
+      // Vérifier si le nouvel email existe déjà
+      const emailExists = await User.findOne({ email: newEmail });
+      if (emailExists) {
+         return res.status(400).json({ error: 'Email already exists' });
+      }
+
+      // Mettre à jour l'email
+      user.email = newEmail;
+      await user.save();
+
+      res.json({ message: 'Email updated successfully', user });
+   } catch (error) {
+      console.error('Change email error:', error);
+      res.status(500).json({ error: 'Server error' });
+   }
+});
+
+// Route pour changer le mot de passe
+router.patch('/change-password', authMiddleware, async (req, res) => {
+   try {
+      const { currentPassword, newPassword } = req.body;
+      const user = await User.findById(req.user._id);
+
+      // Vérifier l'ancien mot de passe
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+         return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+
+      // Hasher et enregistrer le nouveau mot de passe
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+
+      res.json({ message: 'Password updated successfully' });
+   } catch (error) {
+      console.error('Change password error:', error);
       res.status(500).json({ error: 'Server error' });
    }
 });

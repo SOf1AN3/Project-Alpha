@@ -16,6 +16,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import Messages from './pages/Messages';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
+import ProfileSettings from './components/ProfileSettings';
 
 // Import styles
 import './App.css';
@@ -48,6 +49,15 @@ function App() {
               element={
                 <PrivateRoute>
                   <Messages />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/settings"
+              element={
+                <PrivateRoute>
+                  <ProfileSettings />
                 </PrivateRoute>
               }
             />

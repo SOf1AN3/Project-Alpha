@@ -4,10 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/userProfiles.css';
 
 const Users = () => {
-   const { user } = useAuth();
+   const { user, getToken } = useAuth();
    const navigate = useNavigate();
    const [users, setUsers] = useState([]);
    const [selectedUser, setSelectedUser] = useState(null);
+   const [showManageModal, setShowManageModal] = useState(false);
+   const [userToManage, setUserToManage] = useState(null);
+
+   const USER_TYPES = ['simple', 'advanced', 'premium', 'admin'];
 
    useEffect(() => {
       loadUsers();
@@ -15,7 +19,7 @@ const Users = () => {
 
    const loadUsers = async () => {
       try {
-         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+         const token = getToken();
          const response = await fetch('http://localhost:5000/auth/users', {
             headers: {
                'Authorization': `Bearer ${token}`
@@ -24,14 +28,109 @@ const Users = () => {
 
          if (response.ok) {
             const data = await response.json();
-            const filteredUsers = user.type === 'admin'
-               ? data.users
-               : data.users.filter(u => u.type === 'admin');
-            setUsers(filteredUsers);
+            setUsers(data.users);
          }
       } catch (error) {
          console.error('Error loading users:', error);
       }
+   };
+
+   const handleManageUser = (selectedUser) => {
+      setUserToManage(selectedUser);
+      setShowManageModal(true);
+   };
+
+   const changeUserType = async (newType) => {
+      try {
+         const token = getToken();
+         const response = await fetch(`http://localhost:5000/auth/users/${userToManage._id}/type`, {
+            method: 'PATCH',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ type: newType })
+         });
+
+         if (response.ok) {
+            const updatedUser = await response.json();
+
+            // Mise à jour de la liste des utilisateurs
+            setUsers(users.map(u =>
+               u._id === userToManage._id ? { ...u, type: newType } : u
+            ));
+
+            // Mise à jour de l'utilisateur sélectionné si c'est celui qui a été modifié
+            if (selectedUser && selectedUser._id === userToManage._id) {
+               setSelectedUser({ ...selectedUser, type: newType });
+            }
+
+            // Mise à jour de l'utilisateur en cours de gestion
+            setUserToManage({ ...userToManage, type: newType });
+         } else {
+            const errorData = await response.json();
+            console.error('Error changing user type:', errorData);
+         }
+      } catch (error) {
+         console.error('Network or unexpected error:', error);
+      }
+   };
+
+   const deleteUser = async () => {
+      try {
+         const token = getToken();
+         const response = await fetch(`http://localhost:5000/auth/users/${userToManage._id}`, {
+            method: 'DELETE',
+            headers: {
+               'Authorization': `Bearer ${token}`
+            }
+         });
+
+         if (response.ok) {
+            setUsers(users.filter(u => u._id !== userToManage._id));
+            setShowManageModal(false);
+            setSelectedUser(null);
+         }
+      } catch (error) {
+         console.error('Error deleting user:', error);
+      }
+   };
+
+   const renderManageModal = () => {
+      if (!showManageModal || !userToManage) return null;
+
+      return (
+         <div className="modal-overlay">
+            <div className="modal-content">
+               <h2>Manage User: {userToManage.name}</h2>
+               <div className="modal-actions">
+                  <select
+                     value={userToManage.type}
+                     onChange={(e) => changeUserType(e.target.value)}
+                     className="form-control"
+                  >
+                     {USER_TYPES.map(type => (
+                        <option key={type} value={type}>
+                           {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </option>
+                     ))}
+                  </select>
+                  <button
+                     onClick={deleteUser}
+                     className="btn btn-danger"
+                  >
+                     Delete User
+                  </button>
+                  <button
+                     onClick={() => setShowManageModal(false)}
+                     className="btn btn-secondary"
+                  >
+                     Ok
+                  </button>
+               </div>
+            </div>
+         </div>
+      );
    };
 
    const renderUserProfile = () => {
@@ -45,14 +144,12 @@ const Users = () => {
                </div>
                <div className="user-header-info">
                   <h2>{selectedUser.name}</h2>
-                  <p>{selectedUser.type === 'admin' ? 'Administrator' : 'User'}</p>
+                  <p>{selectedUser.type.charAt(0).toUpperCase() + selectedUser.type.slice(1)}</p>
                </div>
             </div>
             <div className="user-profile-content">
                <p><strong>Email:</strong> {selectedUser.email}</p>
-               {selectedUser.phone && (
-                  <p><strong>Phone:</strong> {selectedUser.phone}</p>
-               )}
+               <p><strong>Type:</strong> {selectedUser.type.charAt(0).toUpperCase() + selectedUser.type.slice(1)}</p>
             </div>
             <div className="user-profile-footer">
                <button
@@ -62,7 +159,10 @@ const Users = () => {
                   Back to Users
                </button>
                {user.type === 'admin' && (
-                  <button className="btn btn-danger">
+                  <button
+                     className="btn btn-danger"
+                     onClick={() => handleManageUser(selectedUser)}
+                  >
                      Manage User
                   </button>
                )}
@@ -95,7 +195,7 @@ const Users = () => {
                   <div className="user-item-info">
                      <p>{u.name}</p>
                      <p className="user-type">
-                        {u.type === 'admin' ? 'Administrator' : 'User'}
+                        {u.type.charAt(0).toUpperCase() + u.type.slice(1)}
                      </p>
                   </div>
                </div>
@@ -111,6 +211,8 @@ const Users = () => {
                </div>
             )}
          </div>
+
+         {renderManageModal()}
       </div>
    );
 };
