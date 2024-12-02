@@ -41,6 +41,15 @@
    border-radius: 0.25rem;
 }
 
+.settings-home-btn {
+   background-color: var(--color-dark);
+   cursor: default;
+}
+
+.settings-home-btn:hover {
+   cursor: default;
+}
+
 .settings-home-btn a {
    text-decoration: none;
    color: var(--color-white);
@@ -131,6 +140,28 @@
 
 .settings-section button:hover {
    background-color: var(--color-purple-light);
+}
+
+
+.admin-section {
+   display: flex;
+   flex-direction: column;
+   background-color: var(--color-gray-dark);
+   border-radius: 0.5rem;
+   margin-bottom: 1.5rem;
+   margin-top: 15px;
+}
+
+.users-list-link {
+   background-color: var(--color-darkest);
+   padding: 10px;
+   border-radius: 0.25rem;
+   transition: all ease 0.5s;
+}
+
+.users-list-link:hover {
+   background-color: var(--color-gray);
+   transition: all ease 0.5s;
 }
 
 /* Responsive Layout */

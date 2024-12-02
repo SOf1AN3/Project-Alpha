@@ -28,6 +28,8 @@ const Header = () => {
           }
      };
 
+     const handleSettingsClick = () => { navigate('/settings'); };
+
      const confirmLogout = async () => {
           try {
                await logout();
@@ -72,7 +74,7 @@ const Header = () => {
                     </button>
 
                     <div className='header-right-section'>
-                         <a href="/settings" ><img src={settings} alt="" className='settings-gear' /></a>
+                         <button className='connexion-btn btn' onClick={handleSettingsClick}>{t('header_settings')}</button>
                          <button
                               className='connexion-btn btn'
                               onClick={handleAuthClick}

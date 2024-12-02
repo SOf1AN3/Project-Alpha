@@ -89,5 +89,6 @@
    "profile_settings_password_updated": "Password updated successfully",
    "settings_button": "Settings",
    "language_settings": "Language",
-   "profile_settings_login_required": "You must be logged in to access this page."
+   "profile_settings_login_required": "You must be logged in to access this page.",
+   "header_settings": "Settings"
 }

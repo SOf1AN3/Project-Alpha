@@ -217,6 +217,14 @@ const ProfileSettings = () => {
                </div>
             )}
          </div>
+         {user && user.type === 'admin' ? (
+            <div className="admin-section">
+               <a href="/admin/users" className='users-list-link'>(ADMIN) Users management list</a>
+            </div>
+         ) : (
+            <div className="admin-section">
+            </div>
+         )}
       </div>
    );
 };

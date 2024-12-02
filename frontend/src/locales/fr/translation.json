@@ -89,5 +89,6 @@
    "profile_settings_password_updated": "Mot de passe mis à jour avec succès",
    "settings_button": "Paramètres",
    "language_settings": "Langue",
-   "profile_settings_login_required": "Vous devez être connecté pour accéder à cette page"
+   "profile_settings_login_required": "Vous devez être connecté pour accéder à cette page",
+   "header_settings": "Paramètres"
 }
