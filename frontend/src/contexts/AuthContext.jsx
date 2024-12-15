@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'tiberium-backend.vercel.app';
 const AuthContext = createContext();
 
 export const useAuth = () => {
