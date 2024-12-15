@@ -19,6 +19,9 @@ router.get('/conversations', auth, async (req, res) => {
 router.get('/history/:userId', auth, async (req, res) => {
    try {
       const userId = req.params.userId;
+      // Ajout de logs pour le débogage
+      console.log('User ID from params:', userId);
+      console.log('Authenticated user:', req.user);
 
       // Vérification des ObjectId
       if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(req.user.id)) {
@@ -33,6 +36,9 @@ router.get('/history/:userId', auth, async (req, res) => {
       })
          .sort({ timestamp: 1 })
          .populate('senderId receiverId', 'name email');
+
+      // Log des messages trouvés
+      console.log('Messages found:', messages);
 
       res.json(messages);
    } catch (error) {
