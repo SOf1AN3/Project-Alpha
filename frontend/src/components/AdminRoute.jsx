@@ -10,8 +10,8 @@ const AdminRoute = ({ children }) => {
       return <Navigate to="/connexion" />;
    }
 
-   // Check if user has admin role
-   if (user?.role !== 'admin') {
+   // Changez role par type
+   if (user?.type !== 'admin') {
       return <Navigate to="/" />;
    }
 

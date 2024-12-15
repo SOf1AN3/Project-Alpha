@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // L'URL de votre serveur backend
+        target: 'tiberium-backend.vercel.app', // L'URL de votre serveur backend
         changeOrigin: true,
         secure: false,
       }

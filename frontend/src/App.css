@@ -75,23 +75,27 @@ button {
   background-color: white;
   font-weight: 500;
   border: none;
-  border-radius: 20px;
+  border-radius: 50px;
+  transition: all ease 0.5s;
   cursor: pointer;
+}
+
+.btn:hover {
+  background-color: rgb(194, 194, 194);
+  transition: all ease 0.5s;
 }
 
 .connexion-btn {
   padding: 10px 20px;
+  margin: 0 5px;
   background-color: white;
   font-weight: 500;
   border: none;
-  border-radius: 20px;
   cursor: pointer;
   color: black;
 }
 
-.change_language_btn {
-  margin-right: 10px;
-}
+
 
 .connexion-btn:active {
   background-color: rgb(50, 50, 50);
@@ -189,6 +193,33 @@ h5 {
   font-weight: 200;
 }
 
+.header_right_section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.gear-link {
+  min-height: 30px;
+  overflow: hidden;
+}
+
+.settings-gear {
+  width: 30px;
+  padding: 0;
+  margin: 0;
+  filter: brightness(0);
+  transition: all ease 0.7s;
+  cursor: pointer;
+}
+
+.settings {
+  padding: 0px;
+  border-radius: 10px;
+  background: none;
+}
+
 /* Media query for mobile screens */
 @media (max-width: 1000px) {
   .header.menu-open {
@@ -250,10 +281,13 @@ h5 {
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 600px) {
   .logo-text {
     display: none;
   }
+}
+
+@media (max-width: 450px) {
 
   header {
     display: flex;

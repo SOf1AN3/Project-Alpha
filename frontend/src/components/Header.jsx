@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import menuIcon from '../assets/menu.png';
 import exitIcon from '../assets/exit.png';
+import settings from '../assets/settings.png';
 import '../App.css';
 
 const Header = () => {
@@ -26,6 +27,8 @@ const Header = () => {
                navigate('/connexion');
           }
      };
+
+     const handleSettingsClick = () => { navigate('/settings'); };
 
      const confirmLogout = async () => {
           try {
@@ -63,18 +66,17 @@ const Header = () => {
                          <li><a draggable="false" href="/expats">{t('header_expats')}</a></li>
                          <li><a draggable="false" href="/contact">{t('header_contact')}</a></li>
                          <li><a draggable="false" href="/about">{t('header_about')}</a></li>
+                         <li><a draggable="false" href="/chat">{t('header_chat')}</a></li>
                     </ul>
 
                     <button className="menu-button" onClick={toggleMenu}>
                          <img draggable="false" src={menuIcon} alt="Menu" />
                     </button>
 
-                    <div>
-                         <button className='change_language_btn' onClick={changeLanguage}>
-                              {t('language_btn')}
-                         </button>
+                    <div className='header-right-section'>
+                         <button className='connexion-btn btn' onClick={handleSettingsClick}>{t('header_settings')}</button>
                          <button
-                              className='connexion-btn'
+                              className='connexion-btn btn'
                               onClick={handleAuthClick}
                          >
                               {user ? t('header_logout') : t('header_login')}

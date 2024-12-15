@@ -11,11 +11,12 @@ import Expats from './pages/Expats';
 import Contact from './pages/Contact';
 import AboutPage from './pages/AboutPage';
 import InscriptionPage from './pages/InscriptionPage';
-import AdminPanel from './pages/AdminPanel';
+import Users from './components/Users';
 import NotFoundPage from './pages/NotFoundPage';
 import Messages from './pages/Messages';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
+import ProfileSettings from './components/ProfileSettings';
 
 // Import styles
 import './App.css';
@@ -40,6 +41,7 @@ function App() {
             <Route path="/inscription" element={<InscriptionPage />} />
             <Route path="/expats" element={<Expats />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/settings" element={<ProfileSettings />} />
             {/* Protected Routes */}
 
 
@@ -52,15 +54,10 @@ function App() {
               }
             />
 
+
+
             {/* Admin Routes */}
-            <Route
-              path="/admin/users"
-              element={
-                <AdminRoute>
-                  <AdminPanel />
-                </AdminRoute>
-              }
-            />
+            <Route path="/admin/users" element={<AdminRoute> <Users /> </AdminRoute>} />
 
             {/* 404 Route - Always Last */}
             <Route path="*" element={<NotFoundPage />} />

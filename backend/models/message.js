@@ -1,25 +1,41 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const messageSchema = new Schema({
+const messageSchema = new mongoose.Schema({
      senderId: {
-          type: Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          required: true,
+          required: true
      },
      receiverId: {
-          type: Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          required: true,
+          required: true
      },
      content: {
           type: String,
-          required: true,
+          required: true
      },
      timestamp: {
           type: Date,
-          default: Date.now,
-     },
+          default: Date.now
+     }
 });
 
 module.exports = mongoose.model('Message', messageSchema);
+
+// Supprimer tous les index existants
+messageSchema.indexes().forEach(index => {
+     messageSchema.index(index.fields, { unique: false });
+});
+
+const Message = mongoose.model('Message', messageSchema);
+
+// Supprimer l'index email s'il existe
+Message.collection.dropIndex('email_1').catch(err => {
+     // Ignorer l'erreur si l'index n'existe pas
+     if (err.code !== 27) {
+          console.error('Erreur lors de la suppression de l\'index:', err);
+     }
+});
+
+module.exports = Message;
