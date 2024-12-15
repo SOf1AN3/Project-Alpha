@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
-import '../styles/ProfileSettings.css';
+import '../styles/profileSettings.css';
 
 const ProfileSettings = () => {
    const { t } = useTranslation();
