@@ -1,177 +1,147 @@
 :root {
-   --color-darkest: #0f172a;
-   --color-dark: #1e293b;
-   --color-gray-dark: #334155;
-   --color-gray: #475569;
-   --color-gray-light: #64748b;
-   --color-gray-lighter: #94a3b8;
-   --color-purple: #5f169e;
-   --color-purple-light: #7127b6;
-   --color-white: #ffffff;
-   --color-slate-50: #f1f5f9;
-   --color-slate-200: #e2e8f0;
-   --color-slate-300: #cbd5e1;
+   --color-background: #0f172a;
+   --color-foreground: #f1f5f9;
+   --color-card: #1e293b;
+   --color-card-foreground: #f1f5f9;
+   --color-primary: #7c3aed;
+   --color-primary-foreground: #f1f5f9;
+   --color-secondary: #334155;
+   --color-secondary-foreground: #f1f5f9;
+   --color-muted: #334155;
+   --color-muted-foreground: #94a3b8;
+   --color-accent: #334155;
+   --color-accent-foreground: #f1f5f9;
+   --color-destructive: #991b1b;
+   --color-destructive-foreground: #f1f5f9;
+   --color-border: #334155;
+   --color-input: #334155;
+   --color-ring: #7c3aed;
 }
 
-.profile-settings-container {
-   max-width: 1200px;
+.container body {
+   background-color: var(--color-background);
+   color: var(--color-foreground);
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+   line-height: 1.5;
+}
+
+.container {
+   max-width: 64rem;
    margin: 0 auto;
-   padding: 2rem;
-   background-color: var(--color-dark);
-   min-height: 100vh;
-}
-
-.language-section {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   margin-bottom: 2rem;
-}
-
-.language-dropdown-container {
-   display: flex;
-   align-items: center;
-}
-
-.language-dropdown {
-   padding: 0.5rem;
-   background-color: var(--color-gray-dark);
-   color: var(--color-white);
-   border: 1px solid var(--color-gray-light);
-   border-radius: 0.25rem;
-}
-
-.settings-home-btn {
-   background-color: var(--color-dark);
-   cursor: default;
-}
-
-.settings-home-btn:hover {
-   cursor: default;
-}
-
-.settings-home-btn a {
-   text-decoration: none;
-   color: var(--color-white);
-   background-color: var(--color-purple);
-   padding: 0.5rem 1rem;
-   border-radius: 0.25rem;
-   transition: background-color 0.3s ease;
-}
-
-.settings-home-btn a:hover {
-   background-color: var(--color-purple-light);
-}
-
-.profile-settings {
-   display: flex;
-   flex-direction: column;
-   background-color: var(--color-darkest);
-   border-radius: 0.5rem;
-   padding: 2rem;
-}
-
-.profile-settings h2 {
-   color: var(--color-white);
-   margin-bottom: 1.5rem;
-   text-align: center;
-}
-
-.error-message {
-   background-color: #ef4444;
-   color: var(--color-white);
-   padding: 1rem;
-   border-radius: 0.25rem;
-   margin-bottom: 1rem;
-   text-align: center;
-}
-
-.success-message {
-   background-color: #22c55e;
-   color: var(--color-white);
-   padding: 1rem;
-   border-radius: 0.25rem;
-   margin-bottom: 1rem;
-   text-align: center;
-}
-
-.settings-section {
-   display: flex;
-   flex-direction: column;
-   background-color: var(--color-gray-dark);
-   border-radius: 0.5rem;
    padding: 1.5rem;
+}
+
+.card {
+   background-color: var(--color-card);
+   border-radius: 0.5rem;
+   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
    margin-bottom: 1.5rem;
 }
 
-.settings-section h3 {
-   color: var(--color-white);
-   margin-bottom: 1rem;
-   text-align: center;
+.card-header {
+   padding: 1.5rem;
+   border-bottom: 1px solid var(--color-border);
 }
 
-.settings-section form {
+.card-title {
+   font-size: 1.25rem;
+   font-weight: 600;
+   color: var(--color-card-foreground);
+}
+
+.card-content {
+   padding: 1.5rem;
+}
+
+.flex {
    display: flex;
-   flex-direction: column;
-   gap: 1rem;
 }
 
-.settings-section input {
-   padding: 0.75rem;
-   background-color: var(--color-gray);
-   color: var(--color-white);
-   border: 1px solid var(--color-gray-light);
+.justify-between {
+   justify-content: space-between;
+}
+
+.items-center {
+   align-items: center;
+}
+
+.space-x-4>*+* {
+   margin-left: 1rem;
+}
+
+.space-y-4>*+* {
+   margin-top: 1rem;
+}
+
+.select {
+   appearance: none;
+   background-color: var(--color-input);
+   border: 1px solid var(--color-border);
    border-radius: 0.25rem;
+   color: var(--color-foreground);
+   font-size: 1rem;
+   padding: 0.5rem 2rem 0.5rem 0.75rem;
+   width: 180px;
 }
 
-.settings-section input::placeholder {
-   color: var(--color-gray-lighter);
-}
-
-.settings-section button {
-   padding: 0.75rem;
-   background-color: var(--color-purple);
-   color: var(--color-white);
+.button {
+   background-color: var(--color-primary);
    border: none;
    border-radius: 0.25rem;
+   color: var(--color-primary-foreground);
    cursor: pointer;
-   transition: background-color 0.3s ease;
+   font-size: 1rem;
+   padding: 0.5rem 1rem;
+   transition: background-color 0.2s;
 }
 
-.settings-section button:hover {
-   background-color: var(--color-purple-light);
+.button:hover {
+   background-color: var(--color-ring);
 }
 
-
-.admin-section {
-   display: flex;
-   flex-direction: column;
-   background-color: var(--color-gray-dark);
-   border-radius: 0.5rem;
-   margin-bottom: 1.5rem;
-   margin-top: 15px;
+.button-outline {
+   background-color: transparent;
+   border: 1px solid var(--color-border);
+   color: var(--color-foreground);
 }
 
-.users-list-link {
-   background-color: var(--color-darkest);
-   padding: 10px;
+.button-outline:hover {
+   background-color: var(--color-muted);
+}
+
+.input {
+   background-color: var(--color-input);
+   border: 1px solid var(--color-border);
    border-radius: 0.25rem;
-   transition: all ease 0.5s;
+   color: var(--color-foreground);
+   font-size: 1rem;
+   padding: 0.5rem 0.75rem;
+   width: 100%;
 }
 
-.users-list-link:hover {
-   background-color: var(--color-gray);
-   transition: all ease 0.5s;
+.alert {
+   border-radius: 0.25rem;
+   padding: 1rem;
+   margin-bottom: 1.5rem;
 }
 
-/* Responsive Layout */
-@media screen and (min-width: 1024px) {
-   .profile-settings {
-      flex-direction: row;
-      gap: 2rem;
-   }
+.alert-title {
+   font-weight: 600;
+   margin-bottom: 0.5rem;
+}
 
-   .settings-section {
-      flex: 1;
+.alert-destructive {
+   background-color: var(--color-destructive);
+   color: var(--color-destructive-foreground);
+}
+
+.alert-success {
+   background-color: #065f46;
+   color: #ecfdf5;
+}
+
+@media (min-width: 640px) {
+   .container {
+      padding: 2rem;
    }
 }
