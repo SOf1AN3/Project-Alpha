@@ -6,106 +6,141 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv').config();
 
+// Models
+const Message = require('./models/message');
+const User = require('./models/user');
+
+// Initialize app
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
      cors: {
-          origin: 'http://localhost:5173',
+          origin: process.env.CLIENT_URL || 'http://localhost:5173',
           methods: ['GET', 'POST', 'PATCH', 'DELETE'],
           allowedHeaders: ['Content-Type', 'Authorization'],
           credentials: true,
      }
 });
 
-// Configuration de CORS
+// Middleware
 app.use(cors({
-     origin: 'http://localhost:5173',
+     origin: process.env.CLIENT_URL || 'http://localhost:5173',
      methods: ['GET', 'POST', 'PATCH', 'DELETE'],
      allowedHeaders: ['Content-Type', 'Authorization'],
      credentials: true,
 }));
-
-// Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-const authRoutes = require('./routes/auth');
-const messageRoutes = require('./routes/messages');
+app.use('/auth', require('./routes/auth'));
+app.use('/messages', require('./routes/messages'));
 
-// Modèles
-const Message = require('./models/message');
-const User = require('./models/user');
-
-app.use('/auth', authRoutes);
-app.use('/messages', messageRoutes);
-
-// Connexion MongoDB
-mongoose.connect(process.env.MONGO_URI)
-     .then(() => {
-          console.log("Connected to MongoDB");
-          server.listen(process.env.PORT, () => {
-               console.log("Server listening on port", process.env.PORT);
-          });
-     })
-     .catch((error) => {
-          console.log("MongoDB connection error:", error);
-     });
-
-// Gestion des événements Socket.io
-io.on('connection', (socket) => {
-     console.log('New client connected');
-
-     // Authentification du socket
-     socket.on('authenticate', async (token) => {
-          try {
-               // Vérifier le token et obtenir l'utilisateur
-               const decoded = jwt.verify(token, process.env.JWT_SECRET);
-               const user = await User.findById(decoded.userId);
-               if (!user) throw new Error('User not found');
-
-               socket.userId = user._id;
-               socket.userType = user.type;
-               socket.join(user._id.toString()); // Rejoindre une room personnelle
-          } catch (error) {
-               socket.emit('error', 'Authentication failed');
+// Socket middleware for authentication
+io.use(async (socket, next) => {
+     try {
+          const token = socket.handshake.auth.token;
+          if (!token) {
+               return next(new Error('Authentication token required'));
           }
-     });
+
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          const user = await User.findById(decoded.userId);
+          if (!user) {
+               return next(new Error('User not found'));
+          }
+
+          socket.userId = user._id;
+          socket.userType = user.type;
+          next();
+     } catch (error) {
+          next(new Error('Authentication failed'));
+     }
+});
+
+// Socket events
+io.on('connection', (socket) => {
+     console.log('Client connected:', socket.userId);
+
+     // Join personal room
+     socket.join(socket.userId.toString());
 
      socket.on('sendMessage', async (data) => {
           try {
-               if (!socket.userId) {
-                    throw new Error('Not authenticated');
+               if (!data.receiverId || !data.content) {
+                    throw new Error('Missing required message data');
                }
-
-               const { receiverId, content } = data;
 
                const message = new Message({
                     senderId: socket.userId,
-                    receiverId,
-                    content,
-                    timestamp: new Date() // Ajouter le timestamp
+                    receiverId: data.receiverId,
+                    content: data.content.trim(),
+                    timestamp: new Date()
                });
+               console.log('Message:', message);
 
                await message.save();
 
-               // Émettre le message au destinataire et à l'expéditeur
-               io.to(receiverId).emit('receiveMessage', {
+               // Send to receiver
+               io.to(data.receiverId).emit('receiveMessage', {
                     ...message.toObject(),
                     isSentByMe: false
                });
 
+               // Send confirmation to sender
                socket.emit('receiveMessage', {
                     ...message.toObject(),
                     isSentByMe: true
                });
           } catch (error) {
-               console.error('Error in sendMessage:', error);
-               socket.emit('error', error.message);
+               console.error('Message error:', error);
+               socket.emit('error', {
+                    type: 'MESSAGE_ERROR',
+                    message: error.message
+               });
           }
      });
 
      socket.on('disconnect', () => {
-          console.log('Client disconnected');
+          console.log('Client disconnected:', socket.userId);
      });
 });
+
+// Error handling
+app.use((err, req, res, next) => {
+     console.error(err.stack);
+     res.status(500).json({
+          error: true,
+          message: err.message || 'Internal server error'
+     });
+});
+
+// Database connection and server start
+mongoose.connect(process.env.MONGO_URI, {
+     useNewUrlParser: true,
+     useUnifiedTopology: true
+})
+     .then(() => {
+          console.log('Connected to MongoDB');
+          const PORT = process.env.PORT || 3000;
+          server.listen(PORT, () => {
+               console.log(`Server running on port ${PORT}`);
+          });
+     })
+     .catch((error) => {
+          console.error('MongoDB connection error:', error);
+          process.exit(1);
+     });
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+     console.log('SIGTERM received. Shutting down gracefully');
+     server.close(() => {
+          mongoose.connection.close(false, () => {
+               console.log('MongoDB connection closed');
+               process.exit(0);
+          });
+     });
+});
+
+module.exports = app;

@@ -23,33 +23,50 @@ const Messages = () => {
    }, [messages]);
 
    useEffect(() => {
-      const apiUrl = import.meta.env.VITE_API_URL;
-      const newSocket = io(apiUrl);
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      if (!user) return;
 
-      newSocket.emit('authenticate', token);
+      const apiUrl = 'http://localhost:5000';
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      const newSocket = io(apiUrl, {
+         auth: { token }
+      });
+
+      newSocket.on('connect', () => {
+         console.log('Connected to socket');
+      });
 
       newSocket.on('error', (error) => {
          console.error('Socket error:', error);
       });
 
       newSocket.on('receiveMessage', (message) => {
-         console.log('Nouveau message reçu:', message);
-         setMessages((prevMessages) => [...prevMessages, message]);
+         setMessages(prev => {
+            // Check if message already exists
+            const isDuplicate = prev.some(m =>
+               m.content === message.content &&
+               m.timestamp === message.timestamp &&
+               m.senderId._id === message.senderId._id
+            );
+
+            if (isDuplicate) return prev;
+
+            return [...prev, message];
+         });
       });
 
       setSocket(newSocket);
 
       return () => newSocket.close();
-   }, []);
+   }, [user]);
 
    useEffect(() => {
-      loadUsers();
+      if (user) {
+         loadUsers();
+      }
    }, [user]);
 
    useEffect(() => {
       if (selectedUser) {
-         console.log('Utilisateur sélectionné:', selectedUser);
          loadMessages();
       }
    }, [selectedUser]);
@@ -76,29 +93,19 @@ const Messages = () => {
    };
 
    const loadMessages = async () => {
-      if (!selectedUser?._id) {
-         console.log('Pas d\'utilisateur sélectionné');
-         return;
-      }
+      if (!selectedUser?._id) return;
 
       try {
          const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-         console.log('Chargement des messages pour:', selectedUser._id);
-         console.log('Token utilisé:', token);
-
          const response = await fetch(`http://localhost:5000/messages/history/${selectedUser._id}`, {
             headers: {
                'Authorization': `Bearer ${token}`
             }
          });
 
-         const data = await response.json();
-         console.log('Réponse du serveur:', data);
-
          if (response.ok) {
+            const data = await response.json();
             setMessages(data);
-         } else {
-            console.error('Erreur serveur:', data.error);
          }
       } catch (error) {
          console.error('Error loading messages:', error);
@@ -107,19 +114,18 @@ const Messages = () => {
 
    const handleSendMessage = async (e) => {
       e.preventDefault();
-      if (newMessage.trim() && selectedUser && socket) {
-         try {
-            const messageData = {
-               receiverId: selectedUser._id,
-               content: newMessage,
-               senderId: user._id
-            };
+      if (!newMessage.trim() || !selectedUser || !socket) return;
 
-            socket.emit('sendMessage', messageData);
-            setNewMessage('');
-         } catch (error) {
-            console.error('Error sending message:', error);
-         }
+      try {
+         const messageData = {
+            receiverId: selectedUser._id,
+            content: newMessage
+         };
+
+         socket.emit('sendMessage', messageData);
+         setNewMessage('');
+      } catch (error) {
+         console.error('Error sending message:', error);
       }
    };
 
@@ -128,12 +134,11 @@ const Messages = () => {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
    };
 
-   const getMessageSenderId = (message) => {
-      return typeof message.senderId === 'object' ? message.senderId._id : message.senderId;
-   };
-
-   const getMessageReceiverId = (message) => {
-      return typeof message.receiverId === 'object' ? message.receiverId._id : message.receiverId;
+   const getMessageClass = (message) => {
+      const senderId = typeof message.senderId === 'object'
+         ? message.senderId._id
+         : message.senderId;
+      return senderId === user._id ? 'sent' : 'received';
    };
 
    return (
@@ -141,10 +146,7 @@ const Messages = () => {
          <div className="users-list">
             <div className="users-header">
                <h3>Users</h3>
-               <button
-                  className="home-button"
-                  onClick={() => navigate('/')}
-               >
+               <button className="home-button" onClick={() => navigate('/')}>
                   Home
                </button>
             </div>
@@ -167,28 +169,19 @@ const Messages = () => {
                   </div>
                   <div className="messages-display">
                      {messages.length === 0 ? (
-                        <div className="no-messages">Pas encore de messages</div>
+                        <div className="no-messages">No messages yet</div>
                      ) : (
-                        messages.map((message, index) => {
-                           const senderId = getMessageSenderId(message);
-                           const receiverId = getMessageReceiverId(message);
-
-                           return (
-                              <div
-                                 key={index}
-                                 className={
-                                    senderId === user._id ? 'message sent' :
-                                       senderId === selectedUser._id ? 'message received' :
-                                          'message received'
-                                 }
-                              >
-                                 <div className="message-content">{message.content}</div>
-                                 {/* <div className="message-timestamp">
-                                    {formatMessageDate(message.timestamp)}
-                                 </div> */}
+                        messages.map((message, index) => (
+                           <div
+                              key={index}
+                              className={`message ${getMessageClass(message)}`}
+                           >
+                              <div className="message-content">{message.content}</div>
+                              <div className="message-timestamp">
+                                 {formatMessageDate(message.timestamp)}
                               </div>
-                           );
-                        })
+                           </div>
+                        ))
                      )}
                      <div ref={messagesEndRef} />
                   </div>

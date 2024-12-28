@@ -38,7 +38,6 @@ router.get('/history/:userId', auth, async (req, res) => {
          .populate('senderId receiverId', 'name email');
 
       // Log des messages trouvés
-      console.log('Messages found:', messages);
 
       res.json(messages);
    } catch (error) {
