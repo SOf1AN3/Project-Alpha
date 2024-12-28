@@ -75,7 +75,8 @@ io.on('connection', (socket) => {
                     senderId: socket.userId,
                     receiverId: data.receiverId,
                     content: data.content.trim(),
-                    timestamp: new Date()
+                    timestamp: new Date(),
+                    seen: false
                });
                console.log('Message:', message);
 

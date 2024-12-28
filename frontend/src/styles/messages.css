@@ -13,6 +13,29 @@
    --color-slate-300: #cbd5e1;
 }
 
+.unread-badge {
+   position: absolute;
+   top: -8px;
+   right: -8px;
+   background: red;
+   color: white;
+   border-radius: 50%;
+   width: 16px;
+   height: 16px;
+   font-size: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.user-item {
+   position: relative;
+   padding: 10px;
+   cursor: pointer;
+}
+
+
+
 .messages-container {
    display: flex;
    height: calc(100vh - 80px);

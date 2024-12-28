@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import notificationSound from '../assets/notification.wav';
 import '../styles/messages.css';
 
 const Messages = () => {
@@ -12,7 +13,10 @@ const Messages = () => {
    const [newMessage, setNewMessage] = useState('');
    const [users, setUsers] = useState([]);
    const [selectedUser, setSelectedUser] = useState(null);
+   const [unreadMessages, setUnreadMessages] = useState({});
+   const [processedMessages, setProcessedMessages] = useState(new Set());
    const messagesEndRef = useRef(null);
+   const audioRef = useRef(new Audio(notificationSound));
 
    const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -40,15 +44,37 @@ const Messages = () => {
       });
 
       newSocket.on('receiveMessage', (message) => {
+         const messageId = message._id || `${message.senderId}-${message.timestamp}`;
+
+         if (processedMessages.has(messageId)) {
+            return;
+         }
+
+         setProcessedMessages(prev => new Set([...prev, messageId]));
+
          setMessages(prev => {
-            // Check if message already exists
             const isDuplicate = prev.some(m =>
-               m.content === message.content &&
-               m.timestamp === message.timestamp &&
-               m.senderId._id === message.senderId._id
+               (m._id === message._id) ||
+               (m.content === message.content &&
+                  m.timestamp === message.timestamp &&
+                  m.senderId === message.senderId)
             );
 
             if (isDuplicate) return prev;
+
+            const senderId = typeof message.senderId === 'object'
+               ? message.senderId._id
+               : message.senderId;
+
+            if (senderId !== user._id) {
+               audioRef.current.play().catch(err => console.error('Error playing sound:', err));
+               if (!selectedUser || selectedUser._id !== senderId) {
+                  setUnreadMessages(prev => ({
+                     ...prev,
+                     [senderId]: (prev[senderId] || 0) + 1
+                  }));
+               }
+            }
 
             return [...prev, message];
          });
@@ -57,7 +83,7 @@ const Messages = () => {
       setSocket(newSocket);
 
       return () => newSocket.close();
-   }, [user]);
+   }, [user, selectedUser, processedMessages]);
 
    useEffect(() => {
       if (user) {
@@ -68,6 +94,10 @@ const Messages = () => {
    useEffect(() => {
       if (selectedUser) {
          loadMessages();
+         setUnreadMessages(prev => ({
+            ...prev,
+            [selectedUser._id]: 0
+         }));
       }
    }, [selectedUser]);
 
@@ -156,7 +186,14 @@ const Messages = () => {
                   className={`user-item ${selectedUser?._id === u._id ? 'selected' : ''}`}
                   onClick={() => setSelectedUser(u)}
                >
-                  {u.name} {u.type === 'admin' ? '(Admin)' : ''}
+                  <div style={{ position: 'relative', display: 'inline-block' }}>
+                     {u.name} {u.type === 'admin' ? '(Admin)' : ''}
+                     {unreadMessages[u._id] > 0 && (
+                        <span className="unread-badge">
+                           {unreadMessages[u._id] / 2}
+                        </span>
+                     )}
+                  </div>
                </div>
             ))}
          </div>
