@@ -90,5 +90,12 @@
    "settings_button": "Paramètres",
    "language_settings": "Langue",
    "profile_settings_login_required": "Vous devez être connecté pour accéder à cette page",
-   "header_settings": "Paramètres"
+   "header_settings": "Paramètres",
+   "chat_send": "Envoyer",
+   "chat_type_message": "Tapez un message...",
+   "chat_select_user": "Sélectionnez un utilisateur pour commencer à discuter",
+   "chat_loading": "Chargement...",
+   "chat_no_messages": "Pas encore de messages. Commencez la conversation !",
+   "chat_users_online": "Utilisateurs en ligne",
+   "chat_with": "Discuter avec"
 }

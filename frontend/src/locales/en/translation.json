@@ -90,5 +90,12 @@
    "settings_button": "Settings",
    "language_settings": "Language",
    "profile_settings_login_required": "You must be logged in to access this page.",
-   "header_settings": "Settings"
+   "header_settings": "Settings",
+   "chat_send": "Send",
+   "chat_type_message": "Type a message...",
+   "chat_select_user": "Select a user to start chatting",
+   "chat_loading": "Loading...",
+   "chat_no_messages": "No messages yet. Start the conversation!",
+   "chat_users_online": "Users Online",
+   "chat_with": "Chat with"
 }

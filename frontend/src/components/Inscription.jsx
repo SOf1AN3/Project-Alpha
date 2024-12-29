@@ -40,7 +40,7 @@ const Inscription = () => {
                console.log('Signup successful:', data);
 
                if (data) {
-                    window.location.href = '/contact';
+                    window.location.href = '/login';
                }
           } catch (err) {
                console.error('Signup error details:', {

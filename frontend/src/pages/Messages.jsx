@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import notificationSound from '../assets/notification.wav';
 import '../styles/messages.css';
 
 const Messages = () => {
+   const { t } = useTranslation();
    const { user } = useAuth();
    const navigate = useNavigate();
    const [socket, setSocket] = useState(null);
@@ -175,9 +177,9 @@ const Messages = () => {
       <div className="messages-container">
          <div className="users-list">
             <div className="users-header">
-               <h3>Users</h3>
+               <h3>{t('chat_users_online')}</h3>
                <button className="home-button" onClick={() => navigate('/')}>
-                  Home
+                  {t('header_home')}
                </button>
             </div>
             {users.map((u) => (
@@ -187,7 +189,7 @@ const Messages = () => {
                   onClick={() => setSelectedUser(u)}
                >
                   <div style={{ position: 'relative', display: 'inline-block' }}>
-                     {u.name} {u.type === 'admin' ? '(Admin)' : ''}
+                     {u.name} {u.type === 'admin' ? t('chat_admin_label') : ''}
                      {unreadMessages[u._id] > 0 && (
                         <span className="unread-badge">
                            {unreadMessages[u._id] / 2}
@@ -202,11 +204,11 @@ const Messages = () => {
             {selectedUser ? (
                <>
                   <div className="chat-header">
-                     <h3>Chat with {selectedUser.name}</h3>
+                     <h3>{t('chat_with', { name: selectedUser.name })}</h3>
                   </div>
                   <div className="messages-display">
                      {messages.length === 0 ? (
-                        <div className="no-messages">No messages yet</div>
+                        <div className="no-messages">{t('chat_no_messages')}</div>
                      ) : (
                         messages.map((message, index) => (
                            <div
@@ -228,14 +230,16 @@ const Messages = () => {
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         className="message-input"
-                        placeholder="Type your message..."
+                        placeholder={t('chat_type_message')}
                      />
-                     <button type="submit" className="send-button">Send</button>
+                     <button type="submit" className="send-button">
+                        {t('chat_send')}
+                     </button>
                   </form>
                </>
             ) : (
                <div className="no-user-selected">
-                  Select a user to start chatting
+                  {t('chat_select_user')}
                </div>
             )}
          </div>
