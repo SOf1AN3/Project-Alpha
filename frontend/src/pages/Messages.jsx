@@ -17,6 +17,7 @@ const Messages = () => {
    const [selectedUser, setSelectedUser] = useState(null);
    const [unreadMessages, setUnreadMessages] = useState({});
    const [processedMessages, setProcessedMessages] = useState(new Set());
+   const [isMenuOpen, setIsMenuOpen] = useState(false);
    const messagesEndRef = useRef(null);
    const audioRef = useRef(new Audio(notificationSound));
 
@@ -103,6 +104,34 @@ const Messages = () => {
       }
    }, [selectedUser]);
 
+   useEffect(() => {
+      const handleResize = () => {
+         if (window.innerWidth > 768) {
+            setIsMenuOpen(true);
+         } else {
+            setIsMenuOpen(false);
+         }
+      };
+
+      window.addEventListener('resize', handleResize);
+      handleResize(); // Set initial state
+
+      return () => window.removeEventListener('resize', handleResize);
+   }, []);
+
+   const handleClickOutside = (e) => {
+      if (window.innerWidth <= 768 &&
+         !e.target.closest('.users-list') &&
+         !e.target.closest('.menu-toggle')) {
+         setIsMenuOpen(false);
+      }
+   };
+
+   useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+   }, []);
+
    const loadUsers = async () => {
       try {
          const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -173,9 +202,27 @@ const Messages = () => {
       return senderId === user._id ? 'sent' : 'received';
    };
 
+   const toggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+   };
+
+   const closeMenu = () => {
+      if (window.innerWidth <= 768) {
+         setIsMenuOpen(false);
+      }
+   };
+
    return (
-      <div className="messages-container">
-         <div className="users-list">
+      <div className="messages-container" onClick={handleClickOutside}>
+         {window.innerWidth <= 768 && (
+            <button className="menu-toggle" onClick={(e) => {
+               e.stopPropagation();
+               toggleMenu();
+            }}>
+               ☰
+            </button>
+         )}
+         <div className={`users-list ${isMenuOpen ? 'open' : ''}`}>
             <div className="users-header">
                <h3>{t('chat_users_online')}</h3>
                <button className="home-button" onClick={() => navigate('/')}>
@@ -186,7 +233,10 @@ const Messages = () => {
                <div
                   key={u._id}
                   className={`user-item ${selectedUser?._id === u._id ? 'selected' : ''}`}
-                  onClick={() => setSelectedUser(u)}
+                  onClick={() => {
+                     setSelectedUser(u);
+                     closeMenu();
+                  }}
                >
                   <div style={{ position: 'relative', display: 'inline-block' }}>
                      {u.name} {u.type === 'admin' ? t('chat_admin_label') : ''}
