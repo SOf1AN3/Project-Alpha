@@ -266,9 +266,9 @@ const Messages = () => {
                               className={`message ${getMessageClass(message)}`}
                            >
                               <div className="message-content">{message.content}</div>
-                              <div className="message-timestamp">
+                              {/* <div className="message-timestamp">
                                  {formatMessageDate(message.timestamp)}
-                              </div>
+                              </div> */}
                            </div>
                         ))
                      )}

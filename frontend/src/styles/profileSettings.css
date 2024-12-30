@@ -26,20 +26,21 @@
 }
 
 .container {
+   width: 100%;
    max-width: 64rem;
    margin: 0 auto;
-   padding: 1.5rem;
+   padding: 1rem;
 }
 
 .card {
    background-color: var(--color-card);
    border-radius: 0.5rem;
    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-   margin-bottom: 1.5rem;
+   margin-bottom: 1rem;
 }
 
 .card-header {
-   padding: 1.5rem;
+   padding: 1rem;
    border-bottom: 1px solid var(--color-border);
 }
 
@@ -50,7 +51,7 @@
 }
 
 .card-content {
-   padding: 1.5rem;
+   padding: 1rem;
 }
 
 .flex {
@@ -81,7 +82,8 @@
    color: var(--color-foreground);
    font-size: 1rem;
    padding: 0.5rem 2rem 0.5rem 0.75rem;
-   width: 180px;
+   width: 100%;
+   max-width: none;
 }
 
 .button {
@@ -93,6 +95,7 @@
    font-size: 1rem;
    padding: 0.5rem 1rem;
    transition: background-color 0.2s;
+   width: 100%;
 }
 
 .button:hover {
@@ -123,6 +126,8 @@
    border-radius: 0.25rem;
    padding: 1rem;
    margin-bottom: 1.5rem;
+   margin: 1rem 0;
+   font-size: 0.875rem;
 }
 
 .alert-title {
@@ -140,8 +145,81 @@
    color: #ecfdf5;
 }
 
+.header-container {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+}
+
+.header-actions {
+   display: flex;
+   flex-direction: column;
+   gap: 0.75rem;
+}
+
+.form-grid {
+   display: grid;
+   gap: 1rem;
+}
+
+/* Responsive breakpoints */
+@media (min-width: 480px) {
+   .container {
+      padding: 1.5rem;
+   }
+
+   .card-header,
+   .card-content {
+      padding: 1.5rem;
+   }
+}
+
 @media (min-width: 640px) {
    .container {
       padding: 2rem;
+   }
+
+   .header-container {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+   }
+
+   .header-actions {
+      flex-direction: row;
+      align-items: center;
+   }
+
+   .select {
+      width: 180px;
+   }
+
+   .button {
+      width: auto;
+   }
+
+   .form-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+   }
+
+   .alert {
+      margin: 1.5rem 0;
+      font-size: 1rem;
+   }
+}
+
+@media (min-width: 768px) {
+   .container {
+      padding: 2rem;
+   }
+
+   .card {
+      margin-bottom: 1.5rem;
+   }
+
+   .card-header,
+   .card-content {
+      padding: 1.5rem;
    }
 }

@@ -97,5 +97,6 @@
    "chat_loading": "Chargement...",
    "chat_no_messages": "Pas encore de messages. Commencez la conversation !",
    "chat_users_online": "Utilisateurs en ligne",
-   "chat_with": "Discuter avec"
+   "chat_with": "Discuter avec",
+   "chat_admin_label": "Admin"
 }

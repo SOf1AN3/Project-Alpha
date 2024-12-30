@@ -121,17 +121,21 @@ const ProfileSettings = () => {
       <div className="container">
          <div className="card">
             <div className="card-header">
-               <div className="flex justify-between items-center">
+               <div className="header-container">
                   <h2 className="card-title">{t('profile_settings_title')}</h2>
-                  <div className="flex items-center space-x-4">
-                     <select className="select" value={selectedLanguage} onChange={(e) => changeLanguage(e.target.value)}>
+                  <div className="header-actions">
+                     <select
+                        className="select"
+                        value={selectedLanguage}
+                        onChange={(e) => changeLanguage(e.target.value)}
+                     >
                         {languageOptions.map((lang) => (
                            <option key={lang.code} value={lang.code}>
                               {lang.name}
                            </option>
                         ))}
                      </select>
-                     <button className="button button-outline" asChild>
+                     <button className="button button-outline">
                         <a href="/home">{t('header_home')}</a>
                      </button>
                   </div>
@@ -157,7 +161,7 @@ const ProfileSettings = () => {
                            <h2 className="card-title">{t('profile_settings_change_email')}</h2>
                         </div>
                         <div className="card-content">
-                           <form onSubmit={handleEmailChange} className="space-y-4">
+                           <form onSubmit={handleEmailChange} className="form-grid">
                               <input
                                  className="input"
                                  type="email"
@@ -172,7 +176,11 @@ const ProfileSettings = () => {
                                  onChange={(e) => setEmailForm({ ...emailForm, password: e.target.value })}
                                  placeholder={t('profile_settings_confirm_password')}
                               />
-                              <button className="button" type="submit">{t('profile_settings_update_email')}</button>
+                              <div className="col-span-full">
+                                 <button className="button" type="submit">
+                                    {t('profile_settings_update_email')}
+                                 </button>
+                              </div>
                            </form>
                         </div>
                      </div>
@@ -181,7 +189,7 @@ const ProfileSettings = () => {
                            <h2 className="card-title">{t('profile_settings_change_password')}</h2>
                         </div>
                         <div className="card-content">
-                           <form onSubmit={handlePasswordChange} className="space-y-4">
+                           <form onSubmit={handlePasswordChange} className="form-grid">
                               <input
                                  className="input"
                                  type="password"
@@ -197,13 +205,17 @@ const ProfileSettings = () => {
                                  placeholder={t('profile_settings_new_password')}
                               />
                               <input
-                                 className="input"
+                                 className="input col-span-full"
                                  type="password"
                                  value={passwordForm.confirmPassword}
                                  onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
                                  placeholder={t('profile_settings_confirm_new_password')}
                               />
-                              <button className="button" type="submit">{t('profile_settings_update_password')}</button>
+                              <div className="col-span-full">
+                                 <button className="button" type="submit">
+                                    {t('profile_settings_update_password')}
+                                 </button>
+                              </div>
                            </form>
                         </div>
                      </div>
@@ -217,7 +229,7 @@ const ProfileSettings = () => {
                {user && user.type === 'admin' && (
                   <div className="card">
                      <div className="card-content">
-                        <button className="button button-outline" asChild>
+                        <button className="button button-outline">
                            <a href="/admin/users">(ADMIN) Users management list</a>
                         </button>
                      </div>
